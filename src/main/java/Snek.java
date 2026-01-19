@@ -12,10 +12,10 @@ public class Snek {
         return LINEBREAK + "\n" + input + "\n" + LINEBREAK;
     }
 
-    private static void addTask(String task) {
-        System.out.println(frameMessage("I'ves addedss: " + task));
-        taskList[taskCount] = new Task(task);
+    private static void addTask(Task task) {
+        taskList[taskCount] = task;
         taskCount++;
+        System.out.println(frameMessage("I'ves addedss: " + task));
     }
 
     private static void printTaskList() {
@@ -70,7 +70,6 @@ public class Snek {
                 unmarkTask(args[1]);
                 break;
             default:
-                addTask(input);
                 break;
         }
     }
