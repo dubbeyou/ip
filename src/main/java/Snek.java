@@ -125,6 +125,20 @@ public class Snek {
         createEvent(description, from, to);
     }
 
+    private static void handleDelete(String taskNumber) throws SnekException {
+        int index;
+        try {
+            index = Integer.valueOf(taskNumber) - 1;
+        } catch (NumberFormatException e) {
+            throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
+        }
+        if (index < 0 || index >= taskList.size()) {
+            throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
+        }
+        Task removedTask = taskList.remove(index);
+        System.out.println(frameMessage("Ssss... I'ves removed thisss task:\n\t" + removedTask + "\nYou now havesss " + taskList.size() + " task(s) in your listssss."));
+    }
+
     private static void handleUserInput(String input) throws SnekException{
         String[] args = input.split("[\\s]");
         switch (args[0]) {
@@ -145,6 +159,9 @@ public class Snek {
                 break;
             case "event":
                 handleEvent(input);
+                break;
+            case "delete":
+                handleDelete(args[1]);
                 break;
             default:
                 throw new InvalidCommandSnekException(input);
