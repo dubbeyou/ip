@@ -15,7 +15,7 @@ public class Snek {
     private static void addTask(Task task) {
         taskList[taskCount] = task;
         taskCount++;
-        System.out.println(frameMessage("I'ves addedss: " + task));
+        System.out.println(frameMessage("I'ves addedss:\n" + "\t" + task + "\nYou now havesss " + taskCount + " task(s) in your listssss."));
     }
 
     private static void printTaskList() {
