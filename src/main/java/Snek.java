@@ -35,7 +35,7 @@ public class Snek {
             System.out.println(frameMessage("Ssss... Invalid task number!"));
             return;
         }
-        if (taskList[index].isDone) {
+        if (taskList[index].isDone()) {
             System.out.println(frameMessage("Ssss... Thisss task isss already marked as done!"));
             return;
         }
@@ -49,7 +49,7 @@ public class Snek {
             System.out.println(frameMessage("Ssss... Invalid task number!"));
             return;
         }
-        if (!taskList[index].isDone) {
+        if (!taskList[index].isDone()) {
             System.out.println(frameMessage("Ssss... Thisss task isss already unmarked!"));
             return;
         }
