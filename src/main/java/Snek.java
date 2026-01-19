@@ -29,29 +29,25 @@ public class Snek {
         System.out.println(frameMessage(res));
     }
 
-    private static void markTask(String taskNumber) {
+    private static void markTask(String taskNumber) throws SnekException {
         int index = Integer.valueOf(taskNumber) - 1;
         if (index < 0 || index >= taskCount) {
-            System.out.println(frameMessage("Ssss... Invalid task number!"));
-            return;
+            throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
         }
         if (taskList[index].isDone()) {
-            System.out.println(frameMessage("Ssss... Thisss task isss already marked as done!"));
-            return;
+            throw new InvalidArgumentSnekException("Ssss... Thisss task isss already marked as done!");
         }
         taskList[index].markAsDone();
         System.out.println(frameMessage("Ssss... I'ves marked thisss task as donesss:\n  " + taskList[index]));
     }
 
-    private static void unmarkTask(String taskNumber) {
+    private static void unmarkTask(String taskNumber) throws SnekException {
         int index = Integer.parseInt(taskNumber) - 1;
         if (index < 0 || index >= taskCount) {
-            System.out.println(frameMessage("Ssss... Invalid task number!"));
-            return;
+            throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
         }
         if (!taskList[index].isDone()) {
-            System.out.println(frameMessage("Ssss... Thisss task isss already unmarked!"));
-            return;
+            throw new InvalidArgumentSnekException("Ssss... Thisss task isss already unmarked!");
         }
         taskList[index].unmarkAsDone();
         System.out.println(frameMessage("Ssss... I'ves marked thisss task as not done yet:\n  " + taskList[index]));
