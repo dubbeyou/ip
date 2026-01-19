@@ -30,7 +30,12 @@ public class Snek {
     }
 
     private static void markTask(String taskNumber) throws SnekException {
-        int index = Integer.valueOf(taskNumber) - 1;
+        int index;
+        try {
+            index = Integer.valueOf(taskNumber) - 1;
+        } catch (NumberFormatException e) {
+            throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
+        }
         if (index < 0 || index >= taskCount) {
             throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
         }
@@ -42,7 +47,12 @@ public class Snek {
     }
 
     private static void unmarkTask(String taskNumber) throws SnekException {
-        int index = Integer.parseInt(taskNumber) - 1;
+        int index;
+        try {
+            index = Integer.valueOf(taskNumber) - 1;
+        } catch (NumberFormatException e) {
+            throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
+        }
         if (index < 0 || index >= taskCount) {
             throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
         }
