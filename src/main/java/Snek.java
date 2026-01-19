@@ -13,6 +13,7 @@ public class Snek {
     }
 
     private static void addTask(String task) {
+        System.out.println(frameMessage("I'ves addedss: " + task));
         taskList[taskCount] = new Task(task);
         taskCount++;
     }
@@ -28,13 +29,47 @@ public class Snek {
         System.out.println(frameMessage(res));
     }
 
+    private static void markTask(String taskNumber) {
+        int index = Integer.valueOf(taskNumber) - 1;
+        if (index < 0 || index >= taskCount) {
+            System.out.println(frameMessage("Ssss... Invalid task number!"));
+            return;
+        }
+        if (taskList[index].isDone) {
+            System.out.println(frameMessage("Ssss... Thisss task isss already marked as done!"));
+            return;
+        }
+        taskList[index].markAsDone();
+        System.out.println(frameMessage("Ssss... I'ves marked thisss task as donesss:\n  " + taskList[index]));
+    }
+
+    private static void unmarkTask(String taskNumber) {
+        int index = Integer.parseInt(taskNumber) - 1;
+        if (index < 0 || index >= taskCount) {
+            System.out.println(frameMessage("Ssss... Invalid task number!"));
+            return;
+        }
+        if (!taskList[index].isDone) {
+            System.out.println(frameMessage("Ssss... Thisss task isss already unmarked!"));
+            return;
+        }
+        taskList[index].unmarkAsDone();
+        System.out.println(frameMessage("Ssss... I'ves marked thisss task as not done yet:\n  " + taskList[index]));
+    }
+
     private static void handleUserInput(String input) {
-        switch(input) {
+        String[] args = input.split("[\\s]");
+        switch (args[0]) {
             case "list":
                 printTaskList();
                 break;
+            case "mark":
+                markTask(args[1]);
+                break;
+            case "unmark":
+                unmarkTask(args[1]);
+                break;
             default:
-                System.out.println(frameMessage("I'ves addedss: " + input));
                 addTask(input);
                 break;
         }
