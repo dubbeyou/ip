@@ -14,7 +14,7 @@ public class Snek {
 
     private static void addTask(Task task) {
         taskList.add(task);
-        System.out.println(frameMessage("I'ves addedss:\n" + "\t" + task + "\nYou now havesss " + taskList.size() + " task(s) in your listssss."));
+        System.out.println(frameMessage("I'ves addedss:\n\t" + task + "\nYou now havesss " + taskList.size() + " task(s) in your listssss."));
     }
 
     private static void printTaskList() {
