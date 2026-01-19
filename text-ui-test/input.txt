@@ -10,5 +10,12 @@ mark 4
 mark 9
 unmark 4
 unmark 1
+unmark a
 list
+delete 1
+delete 7
+delete a
+delete 1
+list
+test
 bye
