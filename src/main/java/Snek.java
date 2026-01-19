@@ -1,28 +1,27 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Snek {
     private static final String LINEBREAK = "------------------------------------------------------------";
     private static final String HELLO = "Ssss... Hello I'm Snek! Ssss...\nWhatsss cans I do for you todayss...?";
     private static final String BYE = "Ssss... Bye! Ssss...";
 
-    private static Task[] taskList = new Task[100];
-    private static int taskCount = 0;
+    private static ArrayList<Task> taskList = new ArrayList<>();
 
     private static String frameMessage(String input) {
         return LINEBREAK + "\n" + input + "\n" + LINEBREAK;
     }
 
     private static void addTask(Task task) {
-        taskList[taskCount] = task;
-        taskCount++;
-        System.out.println(frameMessage("I'ves addedss:\n" + "\t" + task + "\nYou now havesss " + taskCount + " task(s) in your listssss."));
+        taskList.add(task);
+        System.out.println(frameMessage("I'ves addedss:\n" + "\t" + task + "\nYou now havesss " + taskList.size() + " task(s) in your listssss."));
     }
 
     private static void printTaskList() {
         String res = "";
-        for (int i = 0; i < taskCount; i++) {
-            res += (i + 1) + ". " + taskList[i];
-            if (i != taskCount - 1) {
+        for (int i = 0; i < taskList.size(); i++) {
+            res += (i + 1) + ". " + taskList.get(i);
+            if (i != taskList.size() - 1) {
                 res += "\n";
             }
         }
@@ -36,14 +35,14 @@ public class Snek {
         } catch (NumberFormatException e) {
             throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
         }
-        if (index < 0 || index >= taskCount) {
+        if (index < 0 || index >= taskList.size()) {
             throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
         }
-        if (taskList[index].isDone()) {
+        if (taskList.get(index).isDone()) {
             throw new InvalidArgumentSnekException("Ssss... Thisss task isss already marked as done!");
         }
-        taskList[index].markAsDone();
-        System.out.println(frameMessage("Ssss... I'ves marked thisss task as donesss:\n  " + taskList[index]));
+        taskList.get(index).markAsDone();
+        System.out.println(frameMessage("Ssss... I'ves marked thisss task as donesss:\n  " + taskList.get(index)));
     }
 
     private static void unmarkTask(String taskNumber) throws SnekException {
@@ -53,14 +52,14 @@ public class Snek {
         } catch (NumberFormatException e) {
             throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
         }
-        if (index < 0 || index >= taskCount) {
+        if (index < 0 || index >= taskList.size()) {
             throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
         }
-        if (!taskList[index].isDone()) {
+        if (!taskList.get(index).isDone()) {
             throw new InvalidArgumentSnekException("Ssss... Thisss task isss already unmarked!");
         }
-        taskList[index].unmarkAsDone();
-        System.out.println(frameMessage("Ssss... I'ves marked thisss task as not done yet:\n  " + taskList[index]));
+        taskList.get(index).unmarkAsDone();
+        System.out.println(frameMessage("Ssss... I'ves marked thisss task as not done yet:\n  " + taskList.get(index)));
     }
 
     private static void createTodo(String description) {
