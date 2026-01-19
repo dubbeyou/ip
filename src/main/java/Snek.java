@@ -124,7 +124,7 @@ public class Snek {
         createEvent(description, from, to);
     }
 
-    private static void handleUserInput(String input) {
+    private static void handleUserInput(String input) throws SnekException{
         String[] args = input.split("[\\s]");
         switch (args[0]) {
             case "list":
@@ -146,7 +146,7 @@ public class Snek {
                 handleEvent(input);
                 break;
             default:
-                break;
+                throw new InvalidCommandSnekException(input);
         }
     }
 
@@ -156,8 +156,13 @@ public class Snek {
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
         while (!input.equals("bye")) {
-            handleUserInput(input);
-            input = sc.nextLine();
+            try {
+                handleUserInput(input);
+            } catch (SnekException e) {
+                System.err.println(frameMessage(e.getMessage()));
+            } finally {
+                input = sc.nextLine();
+            }
         }
 
         System.out.println(frameMessage(BYE));
