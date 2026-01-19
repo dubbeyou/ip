@@ -68,7 +68,8 @@ public class Snek {
     }
 
     private static void handleTodo(String input) {
-        String description = input.substring(5).trim();
+        int commandLen = "todo".length();
+        String description = input.substring(commandLen).trim();
         createTodo(description);
     }
 
