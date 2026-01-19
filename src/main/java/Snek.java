@@ -5,23 +5,23 @@ public class Snek {
     private static final String HELLO = "Ssss... Hello I'm Snek! Ssss...\nWhatsss cans I do for you todayss...?";
     private static final String BYE = "Ssss... Bye! Ssss...";
 
-    private static String[] toDoList = new String[100];
-    private static int toDoCount = 0;
+    private static Task[] taskList = new Task[100];
+    private static int taskCount = 0;
 
     private static String frameMessage(String input) {
         return LINEBREAK + "\n" + input + "\n" + LINEBREAK;
     }
 
-    private static void addToDo(String task) {
-        toDoList[toDoCount] = task;
-        toDoCount++;
+    private static void addTask(String task) {
+        taskList[taskCount] = new Task(task);
+        taskCount++;
     }
 
-    private static void printToDoList() {
+    private static void printTaskList() {
         String res = "";
-        for (int i = 0; i < toDoCount; i++) {
-            res += (i + 1) + ". " + toDoList[i];
-            if (i != toDoCount - 1) {
+        for (int i = 0; i < taskCount; i++) {
+            res += (i + 1) + ". " + taskList[i];
+            if (i != taskCount - 1) {
                 res += "\n";
             }
         }
@@ -35,10 +35,10 @@ public class Snek {
         String input = sc.nextLine();
         while (!input.equals("bye")) {
             if (input.equals("list")) {
-                printToDoList();
+                printTaskList();
             } else {
                 System.out.println(frameMessage("I'ves addedss: " + input));
-                addToDo(input);
+                addTask(input);
             }
             input = sc.nextLine();
         }
