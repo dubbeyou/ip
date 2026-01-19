@@ -141,26 +141,27 @@ public class Snek {
 
     private static void handleUserInput(String input) throws SnekException{
         String[] args = input.split("[\\s]");
-        switch (args[0]) {
-            case "list":
+        Command cmd = Command.from(args[0]);
+        switch (cmd) {
+            case LIST:
                 printTaskList();
                 break;
-            case "mark":
+            case MARK:
                 markTask(args[1]);
                 break;
-            case "unmark":
+            case UNMARK:
                 unmarkTask(args[1]);
                 break;
-            case "todo":
+            case TODO:
                 handleTodo(input);
                 break;
-            case "deadline":
+            case DEADLINE:
                 handleDeadline(input);
                 break;
-            case "event":
+            case EVENT:
                 handleEvent(input);
                 break;
-            case "delete":
+            case DELETE:
                 handleDelete(args[1]);
                 break;
             default:
