@@ -67,6 +67,11 @@ public class Snek {
         addTask(deadline);
     }
 
+    private static void createEvent(String description, String from, String to) {
+        Event event = new Event(description, from, to);
+        addTask(event);
+    }
+
     private static void handleTodo(String input) {
         int commandLen = "todo".length();
         String description = input.substring(commandLen).trim();
@@ -94,6 +99,31 @@ public class Snek {
         createDeadline(description, by);
     }
 
+    private static void handleEvent(String input) {
+        String fromMarker = "/from";
+        String toMarker = "/to";
+
+        int fromIdx = input.indexOf(fromMarker);
+        int toIdx = input.indexOf(toMarker);
+        int commandLen = "event".length();
+
+        if (fromIdx == -1 || toIdx == -1 || fromIdx > toIdx) {
+            System.out.println(frameMessage("Ssss... Please provide event in the format: event DESCRIPTION /from START /to END"));
+            return;
+        }
+
+        String description = input.substring(commandLen, fromIdx).trim();
+        String from = input.substring(fromIdx + fromMarker.length(), toIdx).trim();
+        String to = input.substring(toIdx + toMarker.length()).trim();
+
+        if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
+            System.out.println(frameMessage("Ssss... Missing description or /from or /to details."));
+            return;
+        }
+
+        createEvent(description, from, to);
+    }
+
     private static void handleUserInput(String input) {
         String[] args = input.split("[\\s]");
         switch (args[0]) {
@@ -111,6 +141,9 @@ public class Snek {
                 break;
             case "deadline":
                 handleDeadline(input);
+                break;
+            case "event":
+                handleEvent(input);
                 break;
             default:
                 break;
