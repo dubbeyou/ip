@@ -1,7 +1,10 @@
 public class Snek {
+    private static final String LINEBREAK = "------------------------------------------------------------";
+    private static final String HELLO = "Ssss... Hello I'm Snek! Ssss...\nWhatsss cans I do for you todayss...?";
+    private static final String BYE = "Ssss... Bye! Ssss...";
+
     public static void main(String[] args) {
-        String lineBreak = "____________________________________________________________\n";
-        System.out.println(lineBreak + "Ssss... Hello I'm Snek! Ssss...\n" + "Whatsss cans I do for you todayss...?\n" + lineBreak);
-        System.out.println("Ssss... Bye! Ssss...\n" + lineBreak);
+        System.out.println(LINEBREAK + "\n" + HELLO + "\n" + LINEBREAK);
+        System.out.println(BYE + "\n" + LINEBREAK);
     }
 }
