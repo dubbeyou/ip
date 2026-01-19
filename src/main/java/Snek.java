@@ -28,18 +28,25 @@ public class Snek {
         System.out.println(frameMessage(res));
     }
 
+    private static void handleUserInput(String input) {
+        switch(input) {
+            case "list":
+                printTaskList();
+                break;
+            default:
+                System.out.println(frameMessage("I'ves addedss: " + input));
+                addTask(input);
+                break;
+        }
+    }
+
     public static void main(String[] args) {
         System.out.println(frameMessage(HELLO));
 
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
         while (!input.equals("bye")) {
-            if (input.equals("list")) {
-                printTaskList();
-            } else {
-                System.out.println(frameMessage("I'ves addedss: " + input));
-                addTask(input);
-            }
+            handleUserInput(input);
             input = sc.nextLine();
         }
 
