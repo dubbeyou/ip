@@ -74,28 +74,26 @@ public class Snek {
         createTodo(description);
     }
 
-    private static void handleDeadline(String input) {
+    private static void handleDeadline(String input) throws SnekException {
         String byMarker = "/by";
         int byIdx = input.indexOf(byMarker);
         int commandLen = "deadline".length();
 
         if (byIdx == -1 || byIdx <= commandLen) {
-            System.out.println(frameMessage("Ssss... Please provide a deadline in the format: deadline DESCRIPTION /by TIME"));
-            return;
+            throw new InvalidArgumentSnekException("Ssss... Please provide a deadline in the format: deadline DESCRIPTION /by TIME");
         }
 
         String description = input.substring(commandLen, byIdx).trim();
         String by = input.substring(byIdx + byMarker.length()).trim();
 
         if (description.isEmpty() || by.isEmpty()) {
-            System.out.println(frameMessage("Ssss... Missing description or /by time."));
-            return;
+            throw new InvalidArgumentSnekException("Ssss... Missing description or /by time.");
         }
 
         createDeadline(description, by);
     }
 
-    private static void handleEvent(String input) {
+    private static void handleEvent(String input) throws SnekException {
         String fromMarker = "/from";
         String toMarker = "/to";
 
@@ -104,8 +102,7 @@ public class Snek {
         int commandLen = "event".length();
 
         if (fromIdx == -1 || toIdx == -1 || fromIdx > toIdx) {
-            System.out.println(frameMessage("Ssss... Please provide event in the format: event DESCRIPTION /from START /to END"));
-            return;
+            throw new InvalidArgumentSnekException("Ssss... Please provide event in the format: event DESCRIPTION /from START /to END");
         }
 
         String description = input.substring(commandLen, fromIdx).trim();
@@ -113,8 +110,7 @@ public class Snek {
         String to = input.substring(toIdx + toMarker.length()).trim();
 
         if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
-            System.out.println(frameMessage("Ssss... Missing description or /from or /to details."));
-            return;
+            throw new InvalidArgumentSnekException("Ssss... Missing description or /from or /to details.");
         }
 
         createEvent(description, from, to);
