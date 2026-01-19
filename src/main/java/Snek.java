@@ -62,9 +62,35 @@ public class Snek {
         addTask(todo);
     }
 
+    private static void createDeadline(String description, String by) {
+        Deadline deadline = new Deadline(description, by);
+        addTask(deadline);
+    }
+
     private static void handleTodo(String input) {
         String description = input.substring(5).trim();
         createTodo(description);
+    }
+
+    private static void handleDeadline(String input) {
+        String byMarker = "/by";
+        int byIdx = input.indexOf(byMarker);
+        int commandLen = "deadline".length();
+
+        if (byIdx == -1 || byIdx <= commandLen) {
+            System.out.println(frameMessage("Ssss... Please provide a deadline in the format: deadline DESCRIPTION /by TIME"));
+            return;
+        }
+
+        String description = input.substring(commandLen, byIdx).trim();
+        String by = input.substring(byIdx + byMarker.length()).trim();
+
+        if (description.isEmpty() || by.isEmpty()) {
+            System.out.println(frameMessage("Ssss... Missing description or /by time."));
+            return;
+        }
+
+        createDeadline(description, by);
     }
 
     private static void handleUserInput(String input) {
@@ -81,6 +107,9 @@ public class Snek {
                 break;
             case "todo":
                 handleTodo(input);
+                break;
+            case "deadline":
+                handleDeadline(input);
                 break;
             default:
                 break;
