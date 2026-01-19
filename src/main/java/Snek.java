@@ -57,6 +57,16 @@ public class Snek {
         System.out.println(frameMessage("Ssss... I'ves marked thisss task as not done yet:\n  " + taskList[index]));
     }
 
+    private static void createTodo(String description) {
+        ToDo todo = new ToDo(description);
+        addTask(todo);
+    }
+
+    private static void handleTodo(String input) {
+        String description = input.substring(5).trim();
+        createTodo(description);
+    }
+
     private static void handleUserInput(String input) {
         String[] args = input.split("[\\s]");
         switch (args[0]) {
@@ -68,6 +78,9 @@ public class Snek {
                 break;
             case "unmark":
                 unmarkTask(args[1]);
+                break;
+            case "todo":
+                handleTodo(input);
                 break;
             default:
                 break;
