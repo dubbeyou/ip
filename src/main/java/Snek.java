@@ -1,10 +1,7 @@
 public class Snek {
     public static void main(String[] args) {
-        String logo = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";
-        System.out.println("Hello from\n" + logo);
+        String lineBreak = "____________________________________________________________\n";
+        System.out.println(lineBreak + "Ssss... Hello I'm Snek! Ssss...\n" + "Whatsss cans I do for you todayss...?\n" + lineBreak);
+        System.out.println("Ssss... Bye! Ssss...\n" + lineBreak);
     }
 }
