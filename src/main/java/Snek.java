@@ -132,7 +132,7 @@ public class Snek {
         if (isDone) {
             todo.markAsDone();
         }
-        addTask(todo);
+        taskList.add(todo);
     }
 
     private static void createDeadline(String description, String by) {
@@ -145,7 +145,7 @@ public class Snek {
         if (isDone) {
             deadline.markAsDone();
         }
-        addTask(deadline);
+        taskList.add(deadline);
     }
 
     private static void createEvent(String description, String from, String to) {
@@ -158,7 +158,7 @@ public class Snek {
         if (isDone) {
             event.markAsDone();
         }
-        addTask(event);
+        taskList.add(event);
     }
 
     private static void handleTodo(String input) {
