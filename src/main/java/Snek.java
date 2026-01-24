@@ -1,5 +1,7 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
 
 public class Snek {
     private static final String LINEBREAK = "------------------------------------------------------------";
@@ -7,9 +9,33 @@ public class Snek {
     private static final String BYE = "Ssss... Bye! Ssss...";
 
     private static ArrayList<Task> taskList = new ArrayList<>();
+    private static String STORAGEPATH = "./data";
+    private static String FILENAME = "snek.txt";
 
     private static String frameMessage(String input) {
         return LINEBREAK + "\n" + input + "\n" + LINEBREAK;
+    }
+
+    private static void initialiseStorage(String path, String filename) {
+        File dir = new File(path);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        File file = new File(path, filename);
+        try {
+            if (!file.createNewFile()) {
+                Scanner sc = new Scanner(file);
+                while (sc.hasNextLine()) {
+                    // Load tasks from file
+                }
+                sc.close();
+                System.out.println("Ssss... Loaded existing tasksss from storage..sss!");
+            } else {
+                System.out.println("Ssss... Created new storage file for tasksss..sss!");
+            }
+        } catch (IOException e) {
+            System.err.println("Ssss... Error creating storage file!");
+        }
     }
 
     private static void addTask(Task task) {
