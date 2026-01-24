@@ -30,9 +30,9 @@ public class Snek {
                     readFromStorage(sc.nextLine());
                 }
                 sc.close();
-                System.out.println("Ssss... Loaded existing tasksss from storage..sss!");
+                System.out.println("(Ssss... Loaded existing tasksss from storage..sss!)");
             } else {
-                System.out.println("Ssss... Created new storage file for tasksss..sss!");
+                System.out.println("(Ssss... Created new storage file for tasksss..sss!)");
             }
         } catch (IOException e) {
             System.err.println("Ssss... Error creating storage file!");
@@ -255,6 +255,7 @@ public class Snek {
 
     public static void main(String[] args) {
         System.out.println(frameMessage(HELLO));
+        initialiseStorage(STORAGEPATH, FILENAME);
 
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
