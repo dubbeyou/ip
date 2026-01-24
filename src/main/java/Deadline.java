@@ -7,6 +7,11 @@ public class Deadline extends Task {
     }
 
     @Override
+    public String getSaveString() {
+        return super.getSaveString() + " | " + by;
+    }
+
+    @Override
     public String toString() {
         return super.toString() + " (by: " + by + ")";
     }
