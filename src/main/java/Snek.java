@@ -191,7 +191,7 @@ public class Snek {
                 handleDelete(args[1]);
                 break;
             default:
-                throw new InvalidCommandSnekException(input);
+                throw new InvalidCommandSnekException();
         }
     }
 
