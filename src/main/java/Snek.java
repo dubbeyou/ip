@@ -220,11 +220,28 @@ public class Snek {
     }
 
     private static void createEvent(String description, String from, String to) {
+        LocalDateTime fromDateTime = parseDateTime(from);
+        LocalDateTime toDateTime = parseDateTime(to);
+        if (fromDateTime != null && toDateTime != null) {
+            Event event = new Event(description, from, fromDateTime, to, toDateTime);
+            addTask(event);
+            return;
+        }
         Event event = new Event(description, from, to);
         addTask(event);
     }
 
     private static void createEvent(String description, String from, String to, boolean isDone) {
+        LocalDateTime fromDateTime = parseDateTime(from);
+        LocalDateTime toDateTime = parseDateTime(to);
+        if (fromDateTime != null && toDateTime != null) {
+            Event event = new Event(description, from, fromDateTime, to, toDateTime);
+            if (isDone) {
+                event.markAsDone();
+            }
+            taskList.add(event);
+            return;
+        }        
         Event event = new Event(description, from, to);
         if (isDone) {
             event.markAsDone();
