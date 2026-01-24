@@ -63,7 +63,7 @@ public class Snek {
 
     private static void writeToStorage(Task task) {
         try {
-            FileWriter fw = new FileWriter(STORAGEPATH + "/" + FILENAME);
+            FileWriter fw = new FileWriter(STORAGEPATH + "/" + FILENAME, true);
             fw.write(task.getSaveString() + "\n");
             fw.close();
         } catch (IOException e) {
