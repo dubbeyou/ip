@@ -26,7 +26,7 @@ public class Snek {
             if (!file.createNewFile()) {
                 Scanner sc = new Scanner(file);
                 while (sc.hasNextLine()) {
-                    // Load tasks from file
+                    readFromStorage(sc.nextLine());
                 }
                 sc.close();
                 System.out.println("Ssss... Loaded existing tasksss from storage..sss!");
@@ -35,6 +35,28 @@ public class Snek {
             }
         } catch (IOException e) {
             System.err.println("Ssss... Error creating storage file!");
+        }
+    }
+
+    private static void readFromStorage(String data) {
+        try {
+            String[] args = data.split("[\\|]");
+            TaskType type = TaskType.fromCode(args[0].trim());
+            boolean isDone = args[1].trim().equals("1");
+
+            switch (type) {
+            case TODO:
+                createTodo(args[2].trim(), isDone);
+                break;
+            case DEADLINE:
+                createDeadline(args[2].trim(), args[3].trim(), isDone);
+                break;
+            case EVENT:
+                createEvent(args[2].trim(), args[3].trim(), args[4].trim(), isDone);
+                break;
+            }
+        } catch (SnekException e) {
+            System.err.println(frameMessage(e.getMessage()));
         }
     }
 
@@ -93,13 +115,37 @@ public class Snek {
         addTask(todo);
     }
 
+    private static void createTodo(String description, boolean isDone) {
+        ToDo todo = new ToDo(description);
+        if (isDone) {
+            todo.markAsDone();
+        }
+        addTask(todo);
+    }
+
     private static void createDeadline(String description, String by) {
         Deadline deadline = new Deadline(description, by);
         addTask(deadline);
     }
 
+    private static void createDeadline(String description, String by, boolean isDone) {
+        Deadline deadline = new Deadline(description, by);
+        if (isDone) {
+            deadline.markAsDone();
+        }
+        addTask(deadline);
+    }
+
     private static void createEvent(String description, String from, String to) {
         Event event = new Event(description, from, to);
+        addTask(event);
+    }
+
+    private static void createEvent(String description, String from, String to, boolean isDone) {
+        Event event = new Event(description, from, to);
+        if (isDone) {
+            event.markAsDone();
+        }
         addTask(event);
     }
 
