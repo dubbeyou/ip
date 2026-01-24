@@ -309,6 +309,8 @@ public class Snek {
         }
         Task removedTask = taskList.remove(index);
         System.out.println(frameMessage("Ssss... I'ves removed thisss task:\n\t" + removedTask + "\nYou now havesss " + taskList.size() + " task(s) in your listssss."));
+
+        rewriteStorage();
     }
 
     private static void handleUserInput(String input) throws SnekException{
