@@ -3,6 +3,10 @@ import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Snek {
     private static final String LINEBREAK = "------------------------------------------------------------";
@@ -12,6 +16,42 @@ public class Snek {
     private static ArrayList<Task> taskList = new ArrayList<>();
     private static String STORAGEPATH = "./data";
     private static String FILENAME = "snek.txt";
+
+    private static final DateTimeFormatter[] DATE_TIME_FORMATS = {
+            DateTimeFormatter.ofPattern("yyyy-M-d H:m"),
+            DateTimeFormatter.ofPattern("yyyy-M-d Hmm"),
+            DateTimeFormatter.ofPattern("yyyy/M/d H:m"),
+            DateTimeFormatter.ofPattern("yyyy/M/d Hmm"),
+            DateTimeFormatter.ofPattern("d-M-yyyy H:m"),
+            DateTimeFormatter.ofPattern("d-M-yyyy Hmm"),
+            DateTimeFormatter.ofPattern("d/M/yyyy H:m"),
+            DateTimeFormatter.ofPattern("d/M/yyyy Hmm"),
+            DateTimeFormatter.ISO_LOCAL_DATE_TIME
+    };
+
+    private static final DateTimeFormatter[] DATE_FORMATS = {
+            DateTimeFormatter.ofPattern("yyyy-M-d"),
+            DateTimeFormatter.ofPattern("yyyy/M/d"),
+            DateTimeFormatter.ofPattern("d-M-yyyy"),
+            DateTimeFormatter.ofPattern("d/M/yyyy"),
+            DateTimeFormatter.ISO_LOCAL_DATE
+    };
+
+    private static LocalDateTime parseDateTime(String input) {
+        for (DateTimeFormatter formatter : DATE_TIME_FORMATS) {
+            try {
+                return LocalDateTime.parse(input, formatter);
+            } catch (DateTimeParseException ignored) {}
+        }
+
+        for (DateTimeFormatter formatter : DATE_FORMATS) {
+            try {
+                return LocalDate.parse(input, formatter).atStartOfDay();
+            } catch (DateTimeParseException ignored) {}
+        }
+        
+        return null;
+    }
 
     private static String frameMessage(String input) {
         return LINEBREAK + "\n" + input + "\n" + LINEBREAK;
@@ -152,11 +192,23 @@ public class Snek {
     }
 
     private static void createDeadline(String description, String by) {
+        LocalDateTime byDateTime = parseDateTime(by);
+        if (byDateTime != null) {
+            Deadline deadline = new Deadline(description, by, byDateTime);
+            addTask(deadline);
+            return;
+        }
         Deadline deadline = new Deadline(description, by);
         addTask(deadline);
     }
 
     private static void createDeadline(String description, String by, boolean isDone) {
+        LocalDateTime byDateTime = parseDateTime(by);
+        if (byDateTime != null) {
+            Deadline deadline = new Deadline(description, by, byDateTime);
+            taskList.add(deadline);
+            return;
+        }
         Deadline deadline = new Deadline(description, by);
         if (isDone) {
             deadline.markAsDone();
