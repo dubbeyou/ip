@@ -3,13 +3,13 @@ public enum Command {
 
     public static Command from(String token) throws InvalidCommandSnekException {
         if (token == null || token.trim().isEmpty()) {
-            throw new InvalidCommandSnekException(token);
+            throw new InvalidCommandSnekException();
         }
         
         try {
             return Command.valueOf(token.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new InvalidCommandSnekException(token);
+            throw new InvalidCommandSnekException();
         }
     }
 }

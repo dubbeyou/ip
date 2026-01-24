@@ -12,4 +12,13 @@ public enum TaskType {
     public String getCode() { 
         return code;
     }
+
+    public static TaskType fromCode(String code) throws InvalidCommandSnekException{
+        for (TaskType type : TaskType.values()) {
+            if (type.getCode().equalsIgnoreCase(code)) {
+                return type;
+            }
+        }
+        throw new InvalidCommandSnekException();
+    }
 }

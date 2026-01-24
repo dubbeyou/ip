@@ -25,6 +25,10 @@ public class Task {
         return this.isDone;
     }
 
+    public String getSaveString() {
+        return type.getCode() + " | " + (isDone ? "1" : "0") + " | " + description;
+    }
+
     @Override
     public String toString() {
         return "[" + type.getCode() + "]" + "[" + getStatusIcon() + "] " + description;

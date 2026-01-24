@@ -1,5 +1,8 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Snek {
     private static final String LINEBREAK = "------------------------------------------------------------";
@@ -7,13 +10,82 @@ public class Snek {
     private static final String BYE = "Ssss... Bye! Ssss...";
 
     private static ArrayList<Task> taskList = new ArrayList<>();
+    private static String STORAGEPATH = "./data";
+    private static String FILENAME = "snek.txt";
 
     private static String frameMessage(String input) {
         return LINEBREAK + "\n" + input + "\n" + LINEBREAK;
     }
 
+    private static void initialiseStorage(String path, String filename) {
+        File dir = new File(path);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        File file = new File(path, filename);
+        try {
+            if (!file.createNewFile()) {
+                Scanner sc = new Scanner(file);
+                while (sc.hasNextLine()) {
+                    readFromStorage(sc.nextLine());
+                }
+                sc.close();
+                System.out.println("(Ssss... Loaded existing tasksss from storage..sss!)");
+            } else {
+                System.out.println("(Ssss... Created new storage file for tasksss..sss!)");
+            }
+        } catch (IOException e) {
+            System.err.println("Ssss... Error creating storage file!");
+        }
+    }
+
+    private static void readFromStorage(String data) {
+        try {
+            String[] args = data.split("[\\|]");
+            TaskType type = TaskType.fromCode(args[0].trim());
+            boolean isDone = args[1].trim().equals("1");
+
+            switch (type) {
+            case TODO:
+                createTodo(args[2].trim(), isDone);
+                break;
+            case DEADLINE:
+                createDeadline(args[2].trim(), args[3].trim(), isDone);
+                break;
+            case EVENT:
+                createEvent(args[2].trim(), args[3].trim(), args[4].trim(), isDone);
+                break;
+            }
+        } catch (SnekException e) {
+            System.err.println(frameMessage(e.getMessage()));
+        }
+    }
+
+    private static void writeToStorage(Task task) {
+        try {
+            FileWriter fw = new FileWriter(STORAGEPATH + "/" + FILENAME, true);
+            fw.write(task.getSaveString() + "\n");
+            fw.close();
+        } catch (IOException e) {
+            System.err.println("Ssss... Error writing to storage file!");
+        }
+    }
+
+    private static void rewriteStorage() {
+        try {
+            FileWriter fw = new FileWriter(STORAGEPATH + "/" + FILENAME, false);
+            for (Task task : taskList) {
+                fw.write(task.getSaveString() + "\n");
+            }
+            fw.close();
+        } catch (IOException e) {
+            System.err.println("Ssss... Error rewriting storage file!");
+        }
+    }
+
     private static void addTask(Task task) {
         taskList.add(task);
+        writeToStorage(task);
         System.out.println(frameMessage("I'ves addedss:\n\t" + task + "\nYou now havesss " + taskList.size() + " task(s) in your listssss."));
     }
 
@@ -43,6 +115,8 @@ public class Snek {
         }
         taskList.get(index).markAsDone();
         System.out.println(frameMessage("Ssss... I'ves marked thisss task as donesss:\n  " + taskList.get(index)));
+
+        rewriteStorage();
     }
 
     private static void unmarkTask(String taskNumber) throws SnekException {
@@ -60,6 +134,8 @@ public class Snek {
         }
         taskList.get(index).unmarkAsDone();
         System.out.println(frameMessage("Ssss... I'ves marked thisss task as not done yet:\n  " + taskList.get(index)));
+        
+        rewriteStorage();
     }
 
     private static void createTodo(String description) {
@@ -67,14 +143,38 @@ public class Snek {
         addTask(todo);
     }
 
+    private static void createTodo(String description, boolean isDone) {
+        ToDo todo = new ToDo(description);
+        if (isDone) {
+            todo.markAsDone();
+        }
+        taskList.add(todo);
+    }
+
     private static void createDeadline(String description, String by) {
         Deadline deadline = new Deadline(description, by);
         addTask(deadline);
     }
 
+    private static void createDeadline(String description, String by, boolean isDone) {
+        Deadline deadline = new Deadline(description, by);
+        if (isDone) {
+            deadline.markAsDone();
+        }
+        taskList.add(deadline);
+    }
+
     private static void createEvent(String description, String from, String to) {
         Event event = new Event(description, from, to);
         addTask(event);
+    }
+
+    private static void createEvent(String description, String from, String to, boolean isDone) {
+        Event event = new Event(description, from, to);
+        if (isDone) {
+            event.markAsDone();
+        }
+        taskList.add(event);
     }
 
     private static void handleTodo(String input) {
@@ -165,12 +265,13 @@ public class Snek {
                 handleDelete(args[1]);
                 break;
             default:
-                throw new InvalidCommandSnekException(input);
+                throw new InvalidCommandSnekException();
         }
     }
 
     public static void main(String[] args) {
         System.out.println(frameMessage(HELLO));
+        initialiseStorage(STORAGEPATH, FILENAME);
 
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
