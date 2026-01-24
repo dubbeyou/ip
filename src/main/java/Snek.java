@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class Snek {
@@ -60,8 +61,19 @@ public class Snek {
         }
     }
 
+    private static void writeToStorage(Task task) {
+        try {
+            FileWriter fw = new FileWriter(STORAGEPATH + "/" + FILENAME);
+            fw.write(task.getSaveString() + "\n");
+            fw.close();
+        } catch (IOException e) {
+            System.err.println("Ssss... Error writing to storage file!");
+        }
+    }
+
     private static void addTask(Task task) {
         taskList.add(task);
+        writeToStorage(task);
         System.out.println(frameMessage("I'ves addedss:\n\t" + task + "\nYou now havesss " + taskList.size() + " task(s) in your listssss."));
     }
 
