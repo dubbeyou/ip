@@ -71,6 +71,18 @@ public class Snek {
         }
     }
 
+    private static void rewriteStorage() {
+        try {
+            FileWriter fw = new FileWriter(STORAGEPATH + "/" + FILENAME, false);
+            for (Task task : taskList) {
+                fw.write(task.getSaveString() + "\n");
+            }
+            fw.close();
+        } catch (IOException e) {
+            System.err.println("Ssss... Error rewriting storage file!");
+        }
+    }
+
     private static void addTask(Task task) {
         taskList.add(task);
         writeToStorage(task);
@@ -103,6 +115,8 @@ public class Snek {
         }
         taskList.get(index).markAsDone();
         System.out.println(frameMessage("Ssss... I'ves marked thisss task as donesss:\n  " + taskList.get(index)));
+
+        rewriteStorage();
     }
 
     private static void unmarkTask(String taskNumber) throws SnekException {
@@ -120,6 +134,8 @@ public class Snek {
         }
         taskList.get(index).unmarkAsDone();
         System.out.println(frameMessage("Ssss... I'ves marked thisss task as not done yet:\n  " + taskList.get(index)));
+        
+        rewriteStorage();
     }
 
     private static void createTodo(String description) {
