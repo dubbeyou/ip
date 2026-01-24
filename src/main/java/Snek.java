@@ -206,6 +206,9 @@ public class Snek {
         LocalDateTime byDateTime = parseDateTime(by);
         if (byDateTime != null) {
             Deadline deadline = new Deadline(description, by, byDateTime);
+            if (isDone) {
+                deadline.markAsDone();
+            }
             taskList.add(deadline);
             return;
         }
