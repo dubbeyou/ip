@@ -64,12 +64,12 @@ public class Snek {
                     readFromStorage(sc.nextLine());
                 }
                 sc.close();
-                ui.print("Ssss... Loaded existing tasksss from storage..sss!");
+                ui.print(Messages.MESSAGE_SUCCESS_LOAD_EXISTING);
             } else {
-                ui.print("Ssss... Created new storage file for tasksss..sss!");
+                ui.print(Messages.MESSAGE_SUCCESS_LOAD_NEW);
             }
         } catch (IOException e) {
-            ui.printError("Ssss... Error creating storage file!");
+            ui.printError(Messages.MESSAGE_ERROR_LOAD);
         }
     }
 
@@ -101,7 +101,7 @@ public class Snek {
             fw.write(task.getSaveString() + "\n");
             fw.close();
         } catch (IOException e) {
-            ui.printError("Ssss... Error writing to storage file!");
+            ui.printError(Messages.MESSAGE_ERROR_WRITE);
         }
     }
 
@@ -113,14 +113,14 @@ public class Snek {
             }
             fw.close();
         } catch (IOException e) {
-            ui.printError("Ssss... Error rewriting storage file!");
+            ui.printError(Messages.MESSAGE_ERROR_WRITE);
         }
     }
 
     private static void addTask(Task task) {
         taskList.add(task);
         writeToStorage(task);
-        ui.print("I'ves addedss:\n\t" + task + "\nYou now havesss " + taskList.size() + " task(s) in your listssss.");
+        ui.print(String.format(Messages.MESSAGE_ADD_TASK, task, taskList.size()));
     }
 
     private static void printTaskList() {
@@ -139,16 +139,16 @@ public class Snek {
         try {
             index = Integer.valueOf(taskNumber) - 1;
         } catch (NumberFormatException e) {
-            throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_TASK);
         }
         if (index < 0 || index >= taskList.size()) {
-            throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_TASK);
         }
         if (taskList.get(index).isDone()) {
-            throw new InvalidArgumentSnekException("Ssss... Thisss task isss already marked as done!");
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_MARK);
         }
         taskList.get(index).markAsDone();
-        ui.print("Ssss... I'ves marked thisss task as donesss:\n  " + taskList.get(index));
+        ui.print(String.format(Messages.MESSAGE_MARK_TASK, taskList.get(index)));
 
         rewriteStorage();
     }
@@ -158,16 +158,16 @@ public class Snek {
         try {
             index = Integer.valueOf(taskNumber) - 1;
         } catch (NumberFormatException e) {
-            throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_TASK);
         }
         if (index < 0 || index >= taskList.size()) {
-            throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_TASK);
         }
         if (!taskList.get(index).isDone()) {
-            throw new InvalidArgumentSnekException("Ssss... Thisss task isss already unmarked!");
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_UNMARK);
         }
         taskList.get(index).unmarkAsDone();
-        ui.print("Ssss... I'ves marked thisss task as not done yet:\n  " + taskList.get(index));
+        ui.print(String.format(Messages.MESSAGE_UNMARK_TASK, taskList.get(index)));
         
         rewriteStorage();
     }
@@ -255,14 +255,14 @@ public class Snek {
         int commandLen = "deadline".length();
 
         if (byIdx == -1 || byIdx <= commandLen) {
-            throw new InvalidArgumentSnekException("Ssss... Please provide a deadline in the format: deadline DESCRIPTION /by TIME");
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_DEADLINE_1);
         }
 
         String description = input.substring(commandLen, byIdx).trim();
         String by = input.substring(byIdx + byMarker.length()).trim();
 
         if (description.isEmpty() || by.isEmpty()) {
-            throw new InvalidArgumentSnekException("Ssss... Missing description or /by time.");
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_DEADLINE_2);
         }
 
         createDeadline(description, by);
@@ -277,7 +277,7 @@ public class Snek {
         int commandLen = "event".length();
 
         if (fromIdx == -1 || toIdx == -1 || fromIdx > toIdx) {
-            throw new InvalidArgumentSnekException("Ssss... Please provide event in the format: event DESCRIPTION /from START /to END");
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_EVENT_1);
         }
 
         String description = input.substring(commandLen, fromIdx).trim();
@@ -285,7 +285,7 @@ public class Snek {
         String to = input.substring(toIdx + toMarker.length()).trim();
 
         if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
-            throw new InvalidArgumentSnekException("Ssss... Missing description or /from or /to details.");
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_EVENT_2);
         }
 
         createEvent(description, from, to);
@@ -296,13 +296,13 @@ public class Snek {
         try {
             index = Integer.valueOf(taskNumber) - 1;
         } catch (NumberFormatException e) {
-            throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_TASK);
         }
         if (index < 0 || index >= taskList.size()) {
-            throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_TASK);
         }
         Task removedTask = taskList.remove(index);
-        ui.print("Ssss... I'ves removed thisss task:\n\t" + removedTask + "\nYou now havesss " + taskList.size() + " task(s) in your listssss.");
+        ui.print(String.format(Messages.MESSAGE_DELETE_TASK, removedTask, taskList.size()));
 
         rewriteStorage();
     }
