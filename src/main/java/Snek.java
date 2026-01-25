@@ -4,11 +4,11 @@ public class Snek {
     private Ui ui;
 
     public Snek(String filepath) {
-        ui = new Ui();
-        storage = new Storage(filepath);
         try {
+            ui = new Ui();
+            storage = new Storage(filepath);
             tasks = new TaskList(storage.loadTasks());
-            ui.print(Messages.MESSAGE_SUCCESS_LOAD_EXISTING);
+            ui.print(Messages.MESSAGE_SUCCESS_LOAD);
         } catch (SnekException e) {
             ui.printError(e.getMessage());
             tasks = new TaskList();
