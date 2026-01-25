@@ -1,7 +1,9 @@
 package snek.data.exception;
 
+import static snek.common.Messages.MESSAGE_INVALID_COMMAND;
+
 public class InvalidCommandSnekException extends SnekException {
     public InvalidCommandSnekException() {
-        super("Ssssory, I don't undersssstand the commandsss...");
+        super(MESSAGE_INVALID_COMMAND);
     }
 }
