@@ -21,4 +21,5 @@ public class Messages {
     public static final String MESSAGE_INVALID_EVENT_1 = "Ssss... Please provide event in the format: event DESCRIPTION /from START /to END";
     public static final String MESSAGE_INVALID_EVENT_2 = "Ssss... Missing description or /from or /to details.";
     public static final String MESSAGE_DELETE_TASK = "Ssss... I'ves removed thisss task:\n\t%s\nYou now havesss %d task(s) in your listssss.";
+    public static final String MESSAGE_INVALID_FILE_FORMAT = "Ssss... Invalid file format in storage!";
 }
