@@ -1,12 +1,10 @@
 import java.util.Scanner;
-import java.util.ArrayList;
 import java.time.LocalDateTime;
 
 public class Snek {
     private static final Ui ui = new Ui();
     private static final Storage storage = new Storage();
-
-    private static ArrayList<Task> taskList = new ArrayList<>();
+    private static TaskList taskList = new TaskList();
 
     private static void addTask(Task task) {
         taskList.add(task);
@@ -14,53 +12,34 @@ public class Snek {
         ui.print(String.format(Messages.MESSAGE_ADD_TASK, task, taskList.size()));
     }
 
-    private static void printTaskList() {
-        String res = "";
-        for (int i = 0; i < taskList.size(); i++) {
-            res += (i + 1) + ". " + taskList.get(i);
-            if (i != taskList.size() - 1) {
-                res += "\n";
-            }
-        }
-        ui.print(res);
-    }
-
     private static void markTask(String taskNumber) throws SnekException {
         int index;
         try {
-            index = Integer.valueOf(taskNumber) - 1;
+            index = Integer.valueOf(taskNumber);
         } catch (NumberFormatException e) {
             throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_TASK);
         }
-        if (index < 0 || index >= taskList.size()) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_TASK);
-        }
-        if (taskList.get(index).isDone()) {
+        if (taskList.getIndex(index).isDone()) {
             throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_MARK);
         }
-        taskList.get(index).markAsDone();
-        ui.print(String.format(Messages.MESSAGE_MARK_TASK, taskList.get(index)));
-
-        storage.overwrite(taskList);
+        taskList.getIndex(index).markAsDone();
+        ui.print(String.format(Messages.MESSAGE_MARK_TASK, taskList.getIndex(index)));
+        storage.overwrite(taskList.getTasks());
     }
 
     private static void unmarkTask(String taskNumber) throws SnekException {
         int index;
         try {
-            index = Integer.valueOf(taskNumber) - 1;
+            index = Integer.valueOf(taskNumber);
         } catch (NumberFormatException e) {
             throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_TASK);
         }
-        if (index < 0 || index >= taskList.size()) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_TASK);
-        }
-        if (!taskList.get(index).isDone()) {
+        if (!taskList.getIndex(index).isDone()) {
             throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_UNMARK);
         }
-        taskList.get(index).unmarkAsDone();
-        ui.print(String.format(Messages.MESSAGE_UNMARK_TASK, taskList.get(index)));
-        
-        storage.overwrite(taskList);
+        taskList.getIndex(index).unmarkAsDone();
+        ui.print(String.format(Messages.MESSAGE_UNMARK_TASK, taskList.getIndex(index)));
+        storage.overwrite(taskList.getTasks());
     }
 
     private static void createTodo(String description) {
@@ -149,10 +128,10 @@ public class Snek {
         if (index < 0 || index >= taskList.size()) {
             throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_TASK);
         }
-        Task removedTask = taskList.remove(index);
+        Task removedTask = taskList.delete(index);
         ui.print(String.format(Messages.MESSAGE_DELETE_TASK, removedTask, taskList.size()));
 
-        storage.overwrite(taskList);
+        storage.overwrite(taskList.getTasks());
     }
 
     private static void handleUserInput(String input) throws SnekException{
@@ -160,7 +139,7 @@ public class Snek {
         CommandType cmd = CommandType.from(args[0]);
         switch (cmd) {
             case LIST:
-                printTaskList();
+                ui.print(taskList.getString());
                 break;
             case MARK:
                 markTask(args[1]);
@@ -189,11 +168,11 @@ public class Snek {
         ui.printHelloMessage();
 
         try {
-            taskList = storage.loadTasks();
+            taskList = new TaskList(storage.loadTasks());
             ui.print(Messages.MESSAGE_SUCCESS_LOAD_EXISTING);
         } catch (SnekException e) {
             ui.printError(Messages.MESSAGE_ERROR_LOAD);
-            taskList = new ArrayList<>();
+            taskList = new TaskList();
         }
 
         Scanner sc = new Scanner(System.in);
