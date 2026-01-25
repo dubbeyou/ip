@@ -27,5 +27,4 @@ public class DeadlineCommand extends Command {
         Deadline deadline = new Deadline(description, by);
         tasks.add(deadline);
     }
-    
 }

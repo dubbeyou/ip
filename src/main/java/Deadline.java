@@ -2,8 +2,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Deadline extends Task {
-    protected LocalDateTime byTime = null;
-    protected String by;
+    private String by;
+    private LocalDateTime byTime = null;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("h:mma, MMM dd yyyy");
 
     public Deadline(String description, String by) {

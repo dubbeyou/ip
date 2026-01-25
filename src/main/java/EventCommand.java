@@ -26,7 +26,7 @@ public class EventCommand extends Command {
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
         if (fromTime != null && toTime != null) {
-            Event event = new Event(description, from, fromTime, to, toTime);
+            Event event = new Event(description, from, to, fromTime, toTime);
             tasks.add(event);
             return;
         }
