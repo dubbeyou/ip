@@ -1,125 +1,16 @@
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 public class Snek {
     private static final Ui ui = new Ui();
+    private static final Storage storage = new Storage();
 
     private static ArrayList<Task> taskList = new ArrayList<>();
-    private static String STORAGEPATH = "./data";
-    private static String FILENAME = "snek.txt";
-
-    private static final DateTimeFormatter[] DATE_TIME_FORMATS = {
-            DateTimeFormatter.ofPattern("yyyy-M-d H:m"),
-            DateTimeFormatter.ofPattern("yyyy-M-d Hmm"),
-            DateTimeFormatter.ofPattern("yyyy/M/d H:m"),
-            DateTimeFormatter.ofPattern("yyyy/M/d Hmm"),
-            DateTimeFormatter.ofPattern("d-M-yyyy H:m"),
-            DateTimeFormatter.ofPattern("d-M-yyyy Hmm"),
-            DateTimeFormatter.ofPattern("d/M/yyyy H:m"),
-            DateTimeFormatter.ofPattern("d/M/yyyy Hmm"),
-            DateTimeFormatter.ISO_LOCAL_DATE_TIME
-    };
-
-    private static final DateTimeFormatter[] DATE_FORMATS = {
-            DateTimeFormatter.ofPattern("yyyy-M-d"),
-            DateTimeFormatter.ofPattern("yyyy/M/d"),
-            DateTimeFormatter.ofPattern("d-M-yyyy"),
-            DateTimeFormatter.ofPattern("d/M/yyyy"),
-            DateTimeFormatter.ISO_LOCAL_DATE
-    };
-
-    private static LocalDateTime parseDateTime(String input) {
-        for (DateTimeFormatter formatter : DATE_TIME_FORMATS) {
-            try {
-                return LocalDateTime.parse(input, formatter);
-            } catch (DateTimeParseException ignored) {}
-        }
-
-        for (DateTimeFormatter formatter : DATE_FORMATS) {
-            try {
-                return LocalDate.parse(input, formatter).atStartOfDay();
-            } catch (DateTimeParseException ignored) {}
-        }
-        
-        return null;
-    }
-
-    private static void initialiseStorage(String path, String filename) {
-        File dir = new File(path);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        File file = new File(path, filename);
-        try {
-            if (!file.createNewFile()) {
-                Scanner sc = new Scanner(file);
-                while (sc.hasNextLine()) {
-                    readFromStorage(sc.nextLine());
-                }
-                sc.close();
-                ui.print(Messages.MESSAGE_SUCCESS_LOAD_EXISTING);
-            } else {
-                ui.print(Messages.MESSAGE_SUCCESS_LOAD_NEW);
-            }
-        } catch (IOException e) {
-            ui.printError(Messages.MESSAGE_ERROR_LOAD);
-        }
-    }
-
-    private static void readFromStorage(String data) {
-        try {
-            String[] args = data.split("[\\|]");
-            TaskType type = TaskType.fromCode(args[0].trim());
-            boolean isDone = args[1].trim().equals("1");
-
-            switch (type) {
-            case TODO:
-                createTodo(args[2].trim(), isDone);
-                break;
-            case DEADLINE:
-                createDeadline(args[2].trim(), args[3].trim(), isDone);
-                break;
-            case EVENT:
-                createEvent(args[2].trim(), args[3].trim(), args[4].trim(), isDone);
-                break;
-            }
-        } catch (SnekException e) {
-            ui.printError(e.getMessage());
-        }
-    }
-
-    private static void writeToStorage(Task task) {
-        try {
-            FileWriter fw = new FileWriter(STORAGEPATH + "/" + FILENAME, true);
-            fw.write(task.getSaveString() + "\n");
-            fw.close();
-        } catch (IOException e) {
-            ui.printError(Messages.MESSAGE_ERROR_WRITE);
-        }
-    }
-
-    private static void rewriteStorage() {
-        try {
-            FileWriter fw = new FileWriter(STORAGEPATH + "/" + FILENAME, false);
-            for (Task task : taskList) {
-                fw.write(task.getSaveString() + "\n");
-            }
-            fw.close();
-        } catch (IOException e) {
-            ui.printError(Messages.MESSAGE_ERROR_WRITE);
-        }
-    }
 
     private static void addTask(Task task) {
         taskList.add(task);
-        writeToStorage(task);
+        storage.write(task);
         ui.print(String.format(Messages.MESSAGE_ADD_TASK, task, taskList.size()));
     }
 
@@ -150,7 +41,7 @@ public class Snek {
         taskList.get(index).markAsDone();
         ui.print(String.format(Messages.MESSAGE_MARK_TASK, taskList.get(index)));
 
-        rewriteStorage();
+        storage.overwrite(taskList);
     }
 
     private static void unmarkTask(String taskNumber) throws SnekException {
@@ -169,7 +60,7 @@ public class Snek {
         taskList.get(index).unmarkAsDone();
         ui.print(String.format(Messages.MESSAGE_UNMARK_TASK, taskList.get(index)));
         
-        rewriteStorage();
+        storage.overwrite(taskList);
     }
 
     private static void createTodo(String description) {
@@ -177,16 +68,8 @@ public class Snek {
         addTask(todo);
     }
 
-    private static void createTodo(String description, boolean isDone) {
-        Todo todo = new Todo(description);
-        if (isDone) {
-            todo.markAsDone();
-        }
-        taskList.add(todo);
-    }
-
     private static void createDeadline(String description, String by) {
-        LocalDateTime byDateTime = parseDateTime(by);
+        LocalDateTime byDateTime = Parser.parseDateTime(by);
         if (byDateTime != null) {
             Deadline deadline = new Deadline(description, by, byDateTime);
             addTask(deadline);
@@ -196,26 +79,9 @@ public class Snek {
         addTask(deadline);
     }
 
-    private static void createDeadline(String description, String by, boolean isDone) {
-        LocalDateTime byDateTime = parseDateTime(by);
-        if (byDateTime != null) {
-            Deadline deadline = new Deadline(description, by, byDateTime);
-            if (isDone) {
-                deadline.markAsDone();
-            }
-            taskList.add(deadline);
-            return;
-        }
-        Deadline deadline = new Deadline(description, by);
-        if (isDone) {
-            deadline.markAsDone();
-        }
-        taskList.add(deadline);
-    }
-
     private static void createEvent(String description, String from, String to) {
-        LocalDateTime fromDateTime = parseDateTime(from);
-        LocalDateTime toDateTime = parseDateTime(to);
+        LocalDateTime fromDateTime = Parser.parseDateTime(from);
+        LocalDateTime toDateTime = Parser.parseDateTime(to);
         if (fromDateTime != null && toDateTime != null) {
             Event event = new Event(description, from, fromDateTime, to, toDateTime);
             addTask(event);
@@ -223,24 +89,6 @@ public class Snek {
         }
         Event event = new Event(description, from, to);
         addTask(event);
-    }
-
-    private static void createEvent(String description, String from, String to, boolean isDone) {
-        LocalDateTime fromDateTime = parseDateTime(from);
-        LocalDateTime toDateTime = parseDateTime(to);
-        if (fromDateTime != null && toDateTime != null) {
-            Event event = new Event(description, from, fromDateTime, to, toDateTime);
-            if (isDone) {
-                event.markAsDone();
-            }
-            taskList.add(event);
-            return;
-        }        
-        Event event = new Event(description, from, to);
-        if (isDone) {
-            event.markAsDone();
-        }
-        taskList.add(event);
     }
 
     private static void handleTodo(String input) {
@@ -304,7 +152,7 @@ public class Snek {
         Task removedTask = taskList.remove(index);
         ui.print(String.format(Messages.MESSAGE_DELETE_TASK, removedTask, taskList.size()));
 
-        rewriteStorage();
+        storage.overwrite(taskList);
     }
 
     private static void handleUserInput(String input) throws SnekException{
@@ -339,7 +187,14 @@ public class Snek {
 
     public static void main(String[] args) {
         ui.printHelloMessage();
-        initialiseStorage(STORAGEPATH, FILENAME);
+
+        try {
+            taskList = storage.loadTasks();
+            ui.print(Messages.MESSAGE_SUCCESS_LOAD_EXISTING);
+        } catch (SnekException e) {
+            ui.printError(Messages.MESSAGE_ERROR_LOAD);
+            taskList = new ArrayList<>();
+        }
 
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
