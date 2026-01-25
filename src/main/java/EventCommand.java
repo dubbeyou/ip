@@ -28,10 +28,13 @@ public class EventCommand extends Command {
         if (fromTime != null && toTime != null) {
             Event event = new Event(description, from, to, fromTime, toTime);
             tasks.add(event);
+            ui.print(String.format(Messages.MESSAGE_ADD_TASK, event, tasks.size()));
+            storage.write(event);
             return;
         }
         Event event = new Event(description, from, to);
         tasks.add(event);
+        ui.print(String.format(Messages.MESSAGE_ADD_TASK, event, tasks.size()));
+        storage.write(event);
     }
-    
 }
