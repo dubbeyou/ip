@@ -36,4 +36,24 @@ public class Event extends Task {
         }
         return super.toString()+ " (from: " + fromTime.format(FORMATTER) + " to: " + toTime.format(FORMATTER) + ")";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof Event) {
+            Event other = (Event) obj;
+            boolean isFromTimeEqual = (this.fromTime == null && other.fromTime == null)
+                    || (this.fromTime != null && this.fromTime.equals(other.fromTime));
+            boolean isToTimeEqual = (this.toTime == null && other.toTime == null)
+                    || (this.toTime != null && this.toTime.equals(other.toTime));
+            return super.equals(obj)
+                    && this.from.equals(other.from)
+                    && this.to.equals(other.to)
+                    && isFromTimeEqual
+                    && isToTimeEqual;
+        }
+        return false;
+    }
 }

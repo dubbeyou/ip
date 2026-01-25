@@ -21,4 +21,16 @@ public class TodoCommand extends Command {
         ui.print(String.format(Messages.MESSAGE_ADD_TASK, todo, tasks.size()));
         storage.write(todo);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof TodoCommand) {
+            TodoCommand other = (TodoCommand) obj;
+            return this.description.equals(other.description);
+        }
+        return false;
+    }
 }

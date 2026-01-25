@@ -35,4 +35,18 @@ public class Task {
     public String toString() {
         return "[" + type.getCode() + "]" + "[" + getStatusIcon() + "] " + description;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof Task) {
+            Task other = (Task) obj;
+            return this.description.equals(other.description)
+                    && this.isDone == other.isDone
+                    && this.type == other.type;
+        }
+        return false;
+    }
 }
