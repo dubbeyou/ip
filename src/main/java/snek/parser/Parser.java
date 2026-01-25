@@ -153,10 +153,38 @@ public class Parser {
     }
 
     public static Task parseTaskFromFile(String line) throws SnekException {
-        String[] args = line.split("[\\|]");
+        String[] args = line.trim().split("\\|");
         TaskType type;
-        type = TaskType.fromCode(args[0].trim());
-        boolean isDone = args[1].trim().equals("1");
+
+        if (line == null || line.trim().isEmpty()) {
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_FILE_FORMAT);
+        }
+
+        if (args.length < 3) {
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_FILE_FORMAT);
+        }
+
+        try {
+            type = TaskType.fromCode(args[0].trim());
+        } catch (InvalidCommandSnekException e) {
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_FILE_FORMAT);
+        }
+
+        String doneField = args[1].trim();
+        
+        if (!doneField.equals("0") && !doneField.equals("1")) {
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_FILE_FORMAT);
+        }
+
+        if (type == TaskType.DEADLINE && args.length < 4) {
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_FILE_FORMAT);
+        }
+
+        if (type == TaskType.EVENT && args.length < 5) {
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_FILE_FORMAT);
+        }
+
+        boolean isDone = doneField.equals("1");
         switch (type) {
         case TODO:
             Todo todo = new Todo(args[2].trim());
