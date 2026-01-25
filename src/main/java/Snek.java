@@ -9,9 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class Snek {
-    private static final String LINEBREAK = "------------------------------------------------------------";
-    private static final String HELLO = "Ssss... Hello I'm Snek! Ssss...\nWhatsss cans I do for you todayss...?";
-    private static final String BYE = "Ssss... Bye! Ssss...";
+    private static final Ui ui = new Ui();
 
     private static ArrayList<Task> taskList = new ArrayList<>();
     private static String STORAGEPATH = "./data";
@@ -53,10 +51,6 @@ public class Snek {
         return null;
     }
 
-    private static String frameMessage(String input) {
-        return LINEBREAK + "\n" + input + "\n" + LINEBREAK;
-    }
-
     private static void initialiseStorage(String path, String filename) {
         File dir = new File(path);
         if (!dir.exists()) {
@@ -70,12 +64,12 @@ public class Snek {
                     readFromStorage(sc.nextLine());
                 }
                 sc.close();
-                System.out.println("(Ssss... Loaded existing tasksss from storage..sss!)");
+                ui.print("Ssss... Loaded existing tasksss from storage..sss!");
             } else {
-                System.out.println("(Ssss... Created new storage file for tasksss..sss!)");
+                ui.print("Ssss... Created new storage file for tasksss..sss!");
             }
         } catch (IOException e) {
-            System.err.println("Ssss... Error creating storage file!");
+            ui.printError("Ssss... Error creating storage file!");
         }
     }
 
@@ -97,7 +91,7 @@ public class Snek {
                 break;
             }
         } catch (SnekException e) {
-            System.err.println(frameMessage(e.getMessage()));
+            ui.printError(e.getMessage());
         }
     }
 
@@ -107,7 +101,7 @@ public class Snek {
             fw.write(task.getSaveString() + "\n");
             fw.close();
         } catch (IOException e) {
-            System.err.println("Ssss... Error writing to storage file!");
+            ui.printError("Ssss... Error writing to storage file!");
         }
     }
 
@@ -119,14 +113,14 @@ public class Snek {
             }
             fw.close();
         } catch (IOException e) {
-            System.err.println("Ssss... Error rewriting storage file!");
+            ui.printError("Ssss... Error rewriting storage file!");
         }
     }
 
     private static void addTask(Task task) {
         taskList.add(task);
         writeToStorage(task);
-        System.out.println(frameMessage("I'ves addedss:\n\t" + task + "\nYou now havesss " + taskList.size() + " task(s) in your listssss."));
+        ui.print("I'ves addedss:\n\t" + task + "\nYou now havesss " + taskList.size() + " task(s) in your listssss.");
     }
 
     private static void printTaskList() {
@@ -137,7 +131,7 @@ public class Snek {
                 res += "\n";
             }
         }
-        System.out.println(frameMessage(res));
+        ui.print(res);
     }
 
     private static void markTask(String taskNumber) throws SnekException {
@@ -154,7 +148,7 @@ public class Snek {
             throw new InvalidArgumentSnekException("Ssss... Thisss task isss already marked as done!");
         }
         taskList.get(index).markAsDone();
-        System.out.println(frameMessage("Ssss... I'ves marked thisss task as donesss:\n  " + taskList.get(index)));
+        ui.print("Ssss... I'ves marked thisss task as donesss:\n  " + taskList.get(index));
 
         rewriteStorage();
     }
@@ -173,7 +167,7 @@ public class Snek {
             throw new InvalidArgumentSnekException("Ssss... Thisss task isss already unmarked!");
         }
         taskList.get(index).unmarkAsDone();
-        System.out.println(frameMessage("Ssss... I'ves marked thisss task as not done yet:\n  " + taskList.get(index)));
+        ui.print("Ssss... I'ves marked thisss task as not done yet:\n  " + taskList.get(index));
         
         rewriteStorage();
     }
@@ -308,7 +302,7 @@ public class Snek {
             throw new InvalidArgumentSnekException("Ssss... Invalid task number!");
         }
         Task removedTask = taskList.remove(index);
-        System.out.println(frameMessage("Ssss... I'ves removed thisss task:\n\t" + removedTask + "\nYou now havesss " + taskList.size() + " task(s) in your listssss."));
+        ui.print("Ssss... I'ves removed thisss task:\n\t" + removedTask + "\nYou now havesss " + taskList.size() + " task(s) in your listssss.");
 
         rewriteStorage();
     }
@@ -344,7 +338,7 @@ public class Snek {
     }
 
     public static void main(String[] args) {
-        System.out.println(frameMessage(HELLO));
+        ui.printHelloMessage();
         initialiseStorage(STORAGEPATH, FILENAME);
 
         Scanner sc = new Scanner(System.in);
@@ -353,13 +347,13 @@ public class Snek {
             try {
                 handleUserInput(input);
             } catch (SnekException e) {
-                System.err.println(frameMessage(e.getMessage()));
+                ui.printError(e.getMessage());
             } finally {
                 input = sc.nextLine();
             }
         }
 
-        System.out.println(frameMessage(BYE));
+        ui.printByeMessage();
         sc.close();
     }
 }
