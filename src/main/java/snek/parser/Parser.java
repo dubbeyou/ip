@@ -127,7 +127,8 @@ public class Parser {
     }
 
     public static Command parse(String input) throws SnekException {
-        String[] args = input.trim().split("[\\s]");
+        input = input.trim();
+        String[] args = input.split("[\\s]");
         CommandType cmd = CommandType.from(args[0]);
         switch (cmd) {
         case LIST:
