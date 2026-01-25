@@ -6,20 +6,17 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Storage {
-    private static final String STORAGEPATH = "./data";
-    private static final String FILENAME = "snek.txt";  
-
     private final File file;
 
-    public Storage() {
-        this.file = new File(STORAGEPATH, FILENAME);
+    public Storage(String filepath) {
+        this.file = new File(filepath);
         createFile();
     }
 
     private void createFile() {
-        File dir = new File(STORAGEPATH);
-        if (!dir.exists()) {
-            dir.mkdirs();
+        File parentDir = file.getParentFile();
+        if (parentDir != null && !parentDir.exists()) {
+            parentDir.mkdirs();
         }
         try {
             file.createNewFile();
