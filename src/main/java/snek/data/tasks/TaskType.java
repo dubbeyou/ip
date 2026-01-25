@@ -1,5 +1,7 @@
 package snek.data.tasks;
 
+import snek.data.exception.InvalidCommandSnekException;
+
 public enum TaskType {
     TODO("T"),
     DEADLINE("D"),
