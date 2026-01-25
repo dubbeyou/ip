@@ -179,12 +179,12 @@ public class Snek {
     }
 
     private static void createTodo(String description) {
-        ToDo todo = new ToDo(description);
+        Todo todo = new Todo(description);
         addTask(todo);
     }
 
     private static void createTodo(String description, boolean isDone) {
-        ToDo todo = new ToDo(description);
+        Todo todo = new Todo(description);
         if (isDone) {
             todo.markAsDone();
         }
