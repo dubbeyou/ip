@@ -8,12 +8,12 @@ import java.util.Scanner;
 public class Storage {
     private final File file;
 
-    public Storage(String filepath) {
+    public Storage(String filepath) throws StorageSnekException {
         this.file = new File(filepath);
         createFile();
     }
 
-    private void createFile() {
+    private void createFile() throws StorageSnekException {
         File parentDir = file.getParentFile();
         if (parentDir != null && !parentDir.exists()) {
             parentDir.mkdirs();
@@ -21,7 +21,7 @@ public class Storage {
         try {
             file.createNewFile();
         } catch (IOException e) {
-            throw new RuntimeException("Failed to create storage file.", e);
+            throw new StorageSnekException(Messages.MESSAGE_ERROR_LOAD);
         }
     }
 
@@ -39,23 +39,23 @@ public class Storage {
         return taskList;
     }
 
-    public void write(Task task) {
+    public void write(Task task) throws StorageSnekException{
         try (FileWriter fw = new FileWriter(file, true)) {
             fw.write(task.getSaveString() + "\n");
             fw.close();
         } catch (IOException e) {
-            throw new RuntimeException("Failed to write to storage file.", e);
+            throw new StorageSnekException(Messages.MESSAGE_ERROR_WRITE);
         }
     }
 
-    public void overwrite(ArrayList<Task> taskList) {
+    public void overwrite(ArrayList<Task> taskList) throws StorageSnekException {
         try (FileWriter fw = new FileWriter(file, false)) {
             for (Task task : taskList) {
                 fw.write(task.getSaveString() + "\n");
             }
             fw.close();
         } catch (IOException e) {
-            throw new RuntimeException("Failed to overwrite storage file.", e);
+            throw new StorageSnekException(Messages.MESSAGE_ERROR_WRITE);
         }
     }
 }

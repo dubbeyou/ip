@@ -6,8 +6,7 @@ public class Messages {
     public static final String MESSAGE_LINEBREAK = "------------------------------------------------------------";
     public static final String MESSAGE_HELLO = "Ssss... Hello I'm Snek! Ssss...\nWhatsss cans I do for you todayss...?";
     public static final String MESSAGE_BYE = "Ssss... Bye! Ssss...";
-    public static final String MESSAGE_SUCCESS_LOAD_EXISTING = "Ssss... Loaded existing tasksss from storage..sss!";
-    public static final String MESSAGE_SUCCESS_LOAD_NEW = "Ssss... Created new storage file for tasksss..sss!";
+    public static final String MESSAGE_SUCCESS_LOAD = "Ssss... Loaded tasksss from storage..sss .. or maybe I created a new file for yousss...!";
     public static final String MESSAGE_ERROR_LOAD = "Ssss... Error creating storage file!";
     public static final String MESSAGE_ERROR_WRITE = "Ssss... Error writing to storage file!";
     public static final String MESSAGE_ADD_TASK = "I'ves addedss:\n\t%s\nYou now havesss %d task(s) in your listssss.";
