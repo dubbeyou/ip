@@ -22,9 +22,13 @@ public class DeadlineCommand extends Command {
         if (byTime != null) {
             Deadline deadline = new Deadline(description, by, byTime);
             tasks.add(deadline);
+            ui.print(String.format(Messages.MESSAGE_ADD_TASK, deadline, tasks.size()));
+            storage.write(deadline);
             return;
         }
         Deadline deadline = new Deadline(description, by);
         tasks.add(deadline);
+        ui.print(String.format(Messages.MESSAGE_ADD_TASK, deadline, tasks.size()));
+        storage.write(deadline);
     }
 }
