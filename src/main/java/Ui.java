@@ -19,7 +19,7 @@ public class Ui {
         print(Messages.MESSAGE_BYE);
     }
 
-    public String getUserInput() {
+    public String readCommand() {
         return scanner.nextLine();
     }
 }
