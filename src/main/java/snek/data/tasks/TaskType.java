@@ -1,3 +1,5 @@
+package snek.data.tasks;
+
 public enum TaskType {
     TODO("T"),
     DEADLINE("D"),

@@ -1,3 +1,5 @@
+package snek.commands;
+
 public class MarkCommand extends Command {
     private final String taskNumber;
 

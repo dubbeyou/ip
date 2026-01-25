@@ -1,3 +1,5 @@
+package snek.commands;
+
 import java.time.LocalDateTime;
 
 public class EventCommand extends Command {

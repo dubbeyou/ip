@@ -1,3 +1,5 @@
+package snek.commands;
+
 public class DeleteCommand extends Command {
     private final String taskNumber;
 

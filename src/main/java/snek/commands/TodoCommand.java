@@ -1,3 +1,5 @@
+package snek.commands;
+
 public class TodoCommand extends Command {
     private final String description;
 

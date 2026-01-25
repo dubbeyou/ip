@@ -1,3 +1,5 @@
+package snek;
+
 public class Snek {
     private Storage storage;
     private TaskList tasks;

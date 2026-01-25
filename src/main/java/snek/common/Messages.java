@@ -1,3 +1,5 @@
+package snek.common;
+
 /**
  * Container for user visible messages.
  */
