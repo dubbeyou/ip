@@ -19,7 +19,7 @@ public class StorageTest {
     private Storage storage;
 
     @BeforeEach
-    void setUp() throws StorageSnekException {
+    public void setUp() throws StorageSnekException {
         File file = new File(TEST_FILEPATH);
         if (file.exists()) {
             file.delete();
@@ -28,7 +28,7 @@ public class StorageTest {
     }
 
     @AfterEach
-    void tearDown() {
+    public void tearDown() {
         File file = new File(TEST_FILEPATH);
         if (file.exists()) {
             file.delete();
@@ -40,7 +40,7 @@ public class StorageTest {
     }
 
     @Test
-    void writeThenLoad_multipleTasks_success() throws SnekException {
+    public void writeThenLoad_multipleTasks_success() throws SnekException {
         Task todo = new Todo("read book");
         Task todo2 = new Todo("play game");
         storage.write(todo);
@@ -53,7 +53,7 @@ public class StorageTest {
     }
 
     @Test
-    void overwriteThenLoad_multipleTasks_success() throws SnekException {
+    public void overwriteThenLoad_multipleTasks_success() throws SnekException {
         Task todo = new Todo("read book");
         ArrayList<Task> taskList = new ArrayList<>();
         taskList.add(todo);

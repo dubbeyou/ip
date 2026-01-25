@@ -23,20 +23,20 @@ public class UiTest {
     private Ui ui;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         ui = new Ui();
         System.setOut(new PrintStream(outContent));
         System.setErr(new PrintStream(errContent));
     }
 
     @AfterEach
-    void tearDown() {
+    public void tearDown() {
         System.setOut(originalOut);
         System.setErr(originalErr);
     }
 
     @Test
-    void print_printsFormattedMessage() {
+    public void print_printsFormattedMessage() {
         String testInput = "Hello, World!";
         String expected = MESSAGE_LINEBREAK + "\n" + testInput + "\n" + MESSAGE_LINEBREAK + System.lineSeparator();
         ui.print(testInput);
@@ -44,7 +44,7 @@ public class UiTest {
     }
 
     @Test
-    void printError_printsFormattedErrorMessage() {
+    public void printError_printsFormattedErrorMessage() {
         String testInput = "Error occurred!";
         String expected = MESSAGE_LINEBREAK + "\n" + testInput + "\n" + MESSAGE_LINEBREAK + System.lineSeparator();
         ui.printError(testInput);
@@ -52,21 +52,21 @@ public class UiTest {
     }
 
     @Test
-    void printHelloMessage_printsHelloMessage() {
+    public void printHelloMessage_printsHelloMessage() {
         String expected = MESSAGE_LINEBREAK + "\n" + MESSAGE_HELLO + "\n" + MESSAGE_LINEBREAK + System.lineSeparator();
         ui.printHelloMessage();
         assertEquals(expected, outContent.toString());
     }
 
     @Test
-    void printByeMessage_printsByeMessage() {
+    public void printByeMessage_printsByeMessage() {
         String expected = MESSAGE_LINEBREAK + "\n" + MESSAGE_BYE + "\n" + MESSAGE_LINEBREAK + System.lineSeparator();
         ui.printByeMessage();
         assertEquals(expected, outContent.toString());
     }
 
     @Test
-    void readCommand_readsInputCommand() {
+    public void readCommand_readsInputCommand() {
         String expected = "test command";
         String input = "test command" + System.lineSeparator();
         System.setIn(new ByteArrayInputStream(input.getBytes()));
