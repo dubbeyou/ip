@@ -1,4 +1,8 @@
+package snek.ui;
+
 import java.util.Scanner;
+
+import snek.common.Messages;
 
 public class Ui {
     private final Scanner scanner = new Scanner(System.in);

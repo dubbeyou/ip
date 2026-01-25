@@ -1,3 +1,13 @@
+package snek;
+
+import snek.commands.Command;
+import snek.common.Messages;
+import snek.data.exception.SnekException;
+import snek.data.tasks.TaskList;
+import snek.parser.Parser;
+import snek.storage.Storage;
+import snek.ui.Ui;
+
 public class Snek {
     private Storage storage;
     private TaskList tasks;
