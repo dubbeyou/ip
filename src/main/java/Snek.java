@@ -315,7 +315,7 @@ public class Snek {
 
     private static void handleUserInput(String input) throws SnekException{
         String[] args = input.split("[\\s]");
-        Command cmd = Command.from(args[0]);
+        CommandType cmd = CommandType.from(args[0]);
         switch (cmd) {
             case LIST:
                 printTaskList();
