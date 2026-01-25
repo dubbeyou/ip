@@ -2,10 +2,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Event extends Task {
-    protected LocalDateTime fromTime = null;
-    protected LocalDateTime toTime = null;
-    protected String from;
-    protected String to;
+    private String from;
+    private String to;
+    private LocalDateTime fromTime = null;
+    private LocalDateTime toTime = null;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("h:mma, MMM dd yyyy");
 
     public Event(String description, String from, String to) {
@@ -14,11 +14,11 @@ public class Event extends Task {
         this.to = to;
     }
 
-    public Event(String description, String from, LocalDateTime fromTime, String to, LocalDateTime toTime) {
+    public Event(String description, String from, String to, LocalDateTime fromTime, LocalDateTime toTime) {
         super(description, TaskType.EVENT);
         this.from = from;
-        this.fromTime = fromTime;
         this.to = to;
+        this.fromTime = fromTime;
         this.toTime = toTime;
     }
 

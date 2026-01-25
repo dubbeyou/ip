@@ -1,15 +1,7 @@
-public enum Command {
-    LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, BYE;
-
-    public static Command from(String token) throws InvalidCommandSnekException {
-        if (token == null || token.trim().isEmpty()) {
-            throw new InvalidCommandSnekException();
-        }
-        
-        try {
-            return Command.valueOf(token.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new InvalidCommandSnekException();
-        }
+public abstract class Command {
+    public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws SnekException;
+    
+    public boolean isExit() {
+        return false;
     }
 }
