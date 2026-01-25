@@ -10,7 +10,6 @@ public class TodoCommand extends Command {
         Todo todo = new Todo(description);
         tasks.add(todo);
         ui.print(String.format(Messages.MESSAGE_ADD_TASK, todo, tasks.size()));
-        storage.overwrite(tasks.getTasks());
+        storage.write(todo);
     }
-    
 }
