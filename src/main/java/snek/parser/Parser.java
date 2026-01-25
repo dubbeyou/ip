@@ -64,6 +64,15 @@ public class Parser {
         return null;
     }
 
+    private static Command handleTodo(String input) throws SnekException {
+        int todoLen = "todo".length();
+        String description = input.substring(todoLen).trim();
+        if (description.isEmpty()) {
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_TODO);
+        }
+        return new TodoCommand(description);
+    }
+
     private static Command handleDeadline(String input) throws SnekException {
         String byMarker = "/by";
         int byIdx = input.indexOf(byMarker);
@@ -128,8 +137,7 @@ public class Parser {
         case UNMARK:
             return new UnmarkCommand(args[1]);
         case TODO:
-            int todoLen = "todo".length();
-            return new TodoCommand(input.substring(todoLen).trim());
+            return handleTodo(input);
         case DEADLINE:
             return handleDeadline(input);
         case EVENT:
