@@ -19,9 +19,8 @@ public class DeadlineCommand extends Command {
 
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
-        LocalDateTime byDateTime = Parser.parseDateTime(by);
-        if (byDateTime != null) {
-            Deadline deadline = new Deadline(description, by, byDateTime);
+        if (byTime != null) {
+            Deadline deadline = new Deadline(description, by, byTime);
             tasks.add(deadline);
             return;
         }
