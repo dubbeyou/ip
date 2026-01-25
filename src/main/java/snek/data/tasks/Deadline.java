@@ -31,4 +31,20 @@ public class Deadline extends Task {
         }
         return super.toString() + " (by: " + byTime.format(FORMATTER) + ")";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof Deadline) {
+            Deadline other = (Deadline) obj;
+            boolean isByTimeEqual = (this.byTime == null && other.byTime == null)
+                    || (this.byTime != null && this.byTime.equals(other.byTime));
+            return super.equals(obj)
+                    && this.by.equals(other.by)
+                    && isByTimeEqual;
+        }
+        return false;
+    }
 }
