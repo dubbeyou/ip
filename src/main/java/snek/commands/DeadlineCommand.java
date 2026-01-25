@@ -40,4 +40,21 @@ public class DeadlineCommand extends Command {
         ui.print(String.format(Messages.MESSAGE_ADD_TASK, deadline, tasks.size()));
         storage.write(deadline);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof DeadlineCommand) {
+            if (this.byTime == null) {
+                DeadlineCommand other = (DeadlineCommand) obj;
+                return this.description.equals(other.description) && this.by.equals(other.by) && other.byTime == null;
+            }
+            DeadlineCommand other = (DeadlineCommand) obj;
+            return this.description.equals(other.description) && this.by.equals(other.by)
+                    && this.byTime.equals(other.byTime);
+        }
+        return false;
+    }
 }

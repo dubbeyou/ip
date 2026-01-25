@@ -46,4 +46,23 @@ public class EventCommand extends Command {
         ui.print(String.format(Messages.MESSAGE_ADD_TASK, event, tasks.size()));
         storage.write(event);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof EventCommand) {
+            if (this.fromTime == null && this.toTime == null) {
+                EventCommand other = (EventCommand) obj;
+                return this.description.equals(other.description) && this.from.equals(other.from)
+                        && this.to.equals(other.to) && other.fromTime == null && other.toTime == null;
+            }
+            EventCommand other = (EventCommand) obj;
+            return this.description.equals(other.description) && this.from.equals(other.from)
+                    && this.to.equals(other.to) && this.fromTime.equals(other.fromTime)
+                    && this.toTime.equals(other.toTime);
+        }
+        return false;
+    }
 }
