@@ -7,9 +7,17 @@ import snek.ui.Ui;
 import snek.storage.Storage;
 import snek.data.tasks.Todo;
 
+/**
+ * Command to add a todo task to the Snek application.
+ */
 public class TodoCommand extends Command {
     private final String description;
 
+    /**
+     * Constructs a TodoCommand with the given description.
+     *
+     * @param description The description of the todo task.
+     */
     public TodoCommand(String description) {
         this.description = description;
     }

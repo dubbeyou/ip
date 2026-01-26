@@ -7,9 +7,17 @@ import snek.data.tasks.TaskList;
 import snek.ui.Ui;
 import snek.storage.Storage;
 
+/**
+ * Command to mark a task as done in the Snek application.
+ */
 public class MarkCommand extends Command {
     private final String taskNumber;
 
+    /**
+     * Constructs a MarkCommand with the given task number.
+     *
+     * @param taskNumber The task number to mark as done.
+     */
     public MarkCommand(String taskNumber) {
         this.taskNumber = taskNumber;
     }
