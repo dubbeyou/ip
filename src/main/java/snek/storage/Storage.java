@@ -13,9 +13,18 @@ import snek.data.exception.StorageSnekException;
 import snek.data.tasks.Task;
 import snek.parser.Parser;
 
+/**
+ * Storage class for loading and saving tasks to a file.
+ */
 public class Storage {
     private final File file;
 
+    /**
+     * Constructs a Storage object with the specified file path.
+     *
+     * @param filepath The file path to load and save tasks.
+     * @throws StorageSnekException If there is an error creating the storage file.
+     */
     public Storage(String filepath) throws StorageSnekException {
         this.file = new File(filepath);
         createFile();
@@ -33,6 +42,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads tasks from the storage file.
+     *
+     * @return An ArrayList of tasks loaded from the file.
+     * @throws SnekException If there is an error reading the file or parsing tasks.
+     */
     public ArrayList<Task> loadTasks() throws SnekException{
         ArrayList<Task> taskList = new ArrayList<>();
         try (Scanner scanner = new Scanner(file)) {
@@ -47,6 +62,12 @@ public class Storage {
         return taskList;
     }
 
+    /**
+     * Appends a task to the storage file.
+     *
+     * @param task The task to write to the file.
+     * @throws StorageSnekException If there is an error writing to the file.
+     */
     public void write(Task task) throws StorageSnekException{
         try (FileWriter fw = new FileWriter(file, true)) {
             fw.write(task.getSaveString() + "\n");
@@ -56,6 +77,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Overwrites the storage file with the given list of tasks.
+     *
+     * @param taskList The list of tasks to write to the file.
+     * @throws StorageSnekException If there is an error writing to the file.
+     */
     public void overwrite(ArrayList<Task> taskList) throws StorageSnekException {
         try (FileWriter fw = new FileWriter(file, false)) {
             for (Task task : taskList) {
