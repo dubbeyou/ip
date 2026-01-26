@@ -1,8 +1,8 @@
 package snek.commands;
 
 import snek.data.tasks.TaskList;
-import snek.ui.Ui;
 import snek.storage.Storage;
+import snek.ui.Ui;
 
 public class ListCommand extends Command {
     @Override

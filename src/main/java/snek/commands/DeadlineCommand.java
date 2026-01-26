@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 
 import snek.common.Messages;
 import snek.data.exception.SnekException;
-import snek.data.tasks.TaskList;
-import snek.ui.Ui;
-import snek.storage.Storage;
 import snek.data.tasks.Deadline;
+import snek.data.tasks.TaskList;
+import snek.storage.Storage;
+import snek.ui.Ui;
 
 public class DeadlineCommand extends Command {
     private final String description;
@@ -53,7 +53,7 @@ public class DeadlineCommand extends Command {
             }
             DeadlineCommand other = (DeadlineCommand) obj;
             return this.description.equals(other.description) && this.by.equals(other.by)
-                    && this.byTime.equals(other.byTime);
+                                            && this.byTime.equals(other.byTime);
         }
         return false;
     }

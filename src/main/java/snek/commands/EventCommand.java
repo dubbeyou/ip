@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 
 import snek.common.Messages;
 import snek.data.exception.SnekException;
-import snek.data.tasks.TaskList;
-import snek.ui.Ui;
-import snek.storage.Storage;
 import snek.data.tasks.Event;
+import snek.data.tasks.TaskList;
+import snek.storage.Storage;
+import snek.ui.Ui;
 
 public class EventCommand extends Command {
     private final String description;
@@ -56,12 +56,13 @@ public class EventCommand extends Command {
             if (this.fromTime == null && this.toTime == null) {
                 EventCommand other = (EventCommand) obj;
                 return this.description.equals(other.description) && this.from.equals(other.from)
-                        && this.to.equals(other.to) && other.fromTime == null && other.toTime == null;
+                                                && this.to.equals(other.to) && other.fromTime == null
+                                                && other.toTime == null;
             }
             EventCommand other = (EventCommand) obj;
             return this.description.equals(other.description) && this.from.equals(other.from)
-                    && this.to.equals(other.to) && this.fromTime.equals(other.fromTime)
-                    && this.toTime.equals(other.toTime);
+                                            && this.to.equals(other.to) && this.fromTime.equals(other.fromTime)
+                                            && this.toTime.equals(other.toTime);
         }
         return false;
     }

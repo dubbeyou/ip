@@ -1,11 +1,11 @@
 package snek.commands;
 
 import snek.common.Messages;
-import snek.data.exception.SnekException;
 import snek.data.exception.InvalidArgumentSnekException;
+import snek.data.exception.SnekException;
 import snek.data.tasks.TaskList;
-import snek.ui.Ui;
 import snek.storage.Storage;
+import snek.ui.Ui;
 
 public class UnmarkCommand extends Command {
     private final String taskNumber;
