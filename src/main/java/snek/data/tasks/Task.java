@@ -43,9 +43,7 @@ public class Task {
         }
         if (obj instanceof Task) {
             Task other = (Task) obj;
-            return this.description.equals(other.description)
-                    && this.isDone == other.isDone
-                    && this.type == other.type;
+            return this.description.equals(other.description) && this.isDone == other.isDone && this.type == other.type;
         }
         return false;
     }

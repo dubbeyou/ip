@@ -32,9 +32,9 @@ public class Event extends Task {
     @Override
     public String toString() {
         if (fromTime == null || toTime == null) {
-            return super.toString()+ " (from: " + from + " to: " + to + ")";
+            return super.toString() + " (from: " + from + " to: " + to + ")";
         }
-        return super.toString()+ " (from: " + fromTime.format(FORMATTER) + " to: " + toTime.format(FORMATTER) + ")";
+        return super.toString() + " (from: " + fromTime.format(FORMATTER) + " to: " + toTime.format(FORMATTER) + ")";
     }
 
     @Override
@@ -45,14 +45,11 @@ public class Event extends Task {
         if (obj instanceof Event) {
             Event other = (Event) obj;
             boolean isFromTimeEqual = (this.fromTime == null && other.fromTime == null)
-                    || (this.fromTime != null && this.fromTime.equals(other.fromTime));
+                                            || (this.fromTime != null && this.fromTime.equals(other.fromTime));
             boolean isToTimeEqual = (this.toTime == null && other.toTime == null)
-                    || (this.toTime != null && this.toTime.equals(other.toTime));
-            return super.equals(obj)
-                    && this.from.equals(other.from)
-                    && this.to.equals(other.to)
-                    && isFromTimeEqual
-                    && isToTimeEqual;
+                                            || (this.toTime != null && this.toTime.equals(other.toTime));
+            return super.equals(obj) && this.from.equals(other.from) && this.to.equals(other.to) && isFromTimeEqual
+                                            && isToTimeEqual;
         }
         return false;
     }
