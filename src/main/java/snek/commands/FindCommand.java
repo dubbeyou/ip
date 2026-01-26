@@ -1,8 +1,10 @@
 package snek.commands;
 
+import static snek.common.Messages.MESSAGE_FOUND_MATCHING_TASKS;
+import static snek.common.Messages.MESSAGE_NO_MATCHING_TASKS;
+
 import java.util.ArrayList;
 
-import snek.common.Messages;
 import snek.data.exception.SnekException;
 import snek.data.tasks.Task;
 import snek.data.tasks.TaskList;
@@ -34,10 +36,10 @@ public class FindCommand extends Command {
         }
 
         if (matchedTasks.isEmpty()) {
-            ui.print(Messages.MESSAGE_NO_MATCHING_TASKS);
+            ui.print(MESSAGE_NO_MATCHING_TASKS);
         } else {
             TaskList matchedTasksList = new TaskList(matchedTasks);
-            ui.print(String.format(Messages.MESSAGE_FOUND_MATCHING_TASKS, matchedTasksList.getString()));
+            ui.print(String.format(MESSAGE_FOUND_MATCHING_TASKS, matchedTasksList.getString()));
         }
     }
 }

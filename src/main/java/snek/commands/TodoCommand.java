@@ -1,6 +1,7 @@
 package snek.commands;
 
-import snek.common.Messages;
+import static snek.common.Messages.MESSAGE_ADD_TASK;
+
 import snek.data.exception.SnekException;
 import snek.data.tasks.TaskList;
 import snek.data.tasks.Todo;
@@ -26,7 +27,7 @@ public class TodoCommand extends Command {
     public void execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
         Todo todo = new Todo(description);
         tasks.add(todo);
-        ui.print(String.format(Messages.MESSAGE_ADD_TASK, todo, tasks.size()));
+        ui.print(String.format(MESSAGE_ADD_TASK, todo, tasks.size()));
         storage.write(todo);
     }
 

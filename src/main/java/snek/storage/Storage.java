@@ -1,5 +1,8 @@
 package snek.storage;
 
+import static snek.common.Messages.MESSAGE_ERROR_LOAD;
+import static snek.common.Messages.MESSAGE_ERROR_WRITE;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -7,7 +10,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import snek.common.Messages;
 import snek.data.exception.SnekException;
 import snek.data.exception.StorageSnekException;
 import snek.data.tasks.Task;
@@ -39,7 +41,7 @@ public class Storage {
         try {
             file.createNewFile();
         } catch (IOException e) {
-            throw new StorageSnekException(Messages.MESSAGE_ERROR_LOAD);
+            throw new StorageSnekException(MESSAGE_ERROR_LOAD);
         }
     }
 
@@ -75,7 +77,7 @@ public class Storage {
             fw.write(task.getSaveString() + "\n");
             fw.close();
         } catch (IOException e) {
-            throw new StorageSnekException(Messages.MESSAGE_ERROR_WRITE);
+            throw new StorageSnekException(MESSAGE_ERROR_WRITE);
         }
     }
 
@@ -92,7 +94,7 @@ public class Storage {
             }
             fw.close();
         } catch (IOException e) {
-            throw new StorageSnekException(Messages.MESSAGE_ERROR_WRITE);
+            throw new StorageSnekException(MESSAGE_ERROR_WRITE);
         }
     }
 }

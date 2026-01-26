@@ -1,6 +1,9 @@
 package snek.commands;
 
-import snek.common.Messages;
+import static snek.common.Messages.MESSAGE_INVALID_TASK;
+import static snek.common.Messages.MESSAGE_INVALID_UNMARK;
+import static snek.common.Messages.MESSAGE_UNMARK_TASK;
+
 import snek.data.exception.InvalidArgumentSnekException;
 import snek.data.exception.SnekException;
 import snek.data.tasks.TaskList;
@@ -28,13 +31,13 @@ public class UnmarkCommand extends Command {
         try {
             index = Integer.valueOf(taskNumber);
         } catch (NumberFormatException e) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_TASK);
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_TASK);
         }
         if (!tasks.getIndex(index).isDone()) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_UNMARK);
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_UNMARK);
         }
         tasks.getIndex(index).unmarkAsDone();
-        ui.print(String.format(Messages.MESSAGE_UNMARK_TASK, tasks.getIndex(index)));
+        ui.print(String.format(MESSAGE_UNMARK_TASK, tasks.getIndex(index)));
         storage.overwrite(tasks.getTasks());
     }
 }

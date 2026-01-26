@@ -1,8 +1,9 @@
 package snek.commands;
 
+import static snek.common.Messages.MESSAGE_ADD_TASK;
+
 import java.time.LocalDateTime;
 
-import snek.common.Messages;
 import snek.data.exception.SnekException;
 import snek.data.tasks.Event;
 import snek.data.tasks.TaskList;
@@ -35,7 +36,8 @@ public class EventCommand extends Command {
     }
 
     /**
-     * Constructs an EventCommand with the given description, from, to, fromTime, and toTime.
+     * Constructs an EventCommand with the given description, from, to,
+     * fromTime, and toTime.
      *
      * @param description The description of the event task.
      * @param from The starting time or date of the event.
@@ -56,13 +58,13 @@ public class EventCommand extends Command {
         if (fromTime != null && toTime != null) {
             Event event = new Event(description, from, to, fromTime, toTime);
             tasks.add(event);
-            ui.print(String.format(Messages.MESSAGE_ADD_TASK, event, tasks.size()));
+            ui.print(String.format(MESSAGE_ADD_TASK, event, tasks.size()));
             storage.write(event);
             return;
         }
         Event event = new Event(description, from, to);
         tasks.add(event);
-        ui.print(String.format(Messages.MESSAGE_ADD_TASK, event, tasks.size()));
+        ui.print(String.format(MESSAGE_ADD_TASK, event, tasks.size()));
         storage.write(event);
     }
 

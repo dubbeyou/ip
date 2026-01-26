@@ -1,8 +1,9 @@
 package snek.data.tasks;
 
+import static snek.common.Messages.MESSAGE_INVALID_TASK;
+
 import java.util.ArrayList;
 
-import snek.common.Messages;
 import snek.data.exception.InvalidArgumentSnekException;
 
 /**
@@ -66,7 +67,7 @@ public class TaskList {
     public Task getIndex(int index) throws InvalidArgumentSnekException {
         index = index - 1;
         if (index < 0 || index >= tasks.size()) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_TASK);
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_TASK);
         }
         return tasks.get(index);
     }
@@ -81,7 +82,7 @@ public class TaskList {
     public Task delete(int index) throws InvalidArgumentSnekException {
         index = index - 1;
         if (index < 0 || index >= tasks.size()) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_TASK);
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_TASK);
         }
         return tasks.remove(index);
     }

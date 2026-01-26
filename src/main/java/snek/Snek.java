@@ -1,7 +1,8 @@
 package snek;
 
+import static snek.common.Messages.MESSAGE_SUCCESS_LOAD;
+
 import snek.commands.Command;
-import snek.common.Messages;
 import snek.data.exception.SnekException;
 import snek.data.tasks.TaskList;
 import snek.parser.Parser;
@@ -26,7 +27,7 @@ public class Snek {
             ui = new Ui();
             storage = new Storage(filepath);
             tasks = new TaskList(storage.loadTasks());
-            ui.print(Messages.MESSAGE_SUCCESS_LOAD);
+            ui.print(MESSAGE_SUCCESS_LOAD);
         } catch (SnekException e) {
             ui.printError(e.getMessage());
             tasks = new TaskList();

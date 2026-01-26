@@ -1,5 +1,13 @@
 package snek.parser;
 
+import static snek.common.Messages.MESSAGE_INVALID_DEADLINE_1;
+import static snek.common.Messages.MESSAGE_INVALID_DEADLINE_2;
+import static snek.common.Messages.MESSAGE_INVALID_EVENT_1;
+import static snek.common.Messages.MESSAGE_INVALID_EVENT_2;
+import static snek.common.Messages.MESSAGE_INVALID_FILE_FORMAT;
+import static snek.common.Messages.MESSAGE_INVALID_FIND;
+import static snek.common.Messages.MESSAGE_INVALID_TODO;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -16,7 +24,6 @@ import snek.commands.ListCommand;
 import snek.commands.MarkCommand;
 import snek.commands.TodoCommand;
 import snek.commands.UnmarkCommand;
-import snek.common.Messages;
 import snek.data.exception.InvalidArgumentSnekException;
 import snek.data.exception.InvalidCommandSnekException;
 import snek.data.exception.SnekException;
@@ -69,7 +76,7 @@ public class Parser {
         int todoLen = "todo".length();
         String description = input.substring(todoLen).trim();
         if (description.isEmpty()) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_TODO);
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_TODO);
         }
         return new TodoCommand(description);
     }
@@ -80,14 +87,14 @@ public class Parser {
         int deadlineLen = "deadline".length();
 
         if (byIdx == -1 || byIdx <= deadlineLen) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_DEADLINE_1);
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_DEADLINE_1);
         }
 
         String description = input.substring(deadlineLen, byIdx).trim();
         String by = input.substring(byIdx + byMarker.length()).trim();
 
         if (description.isEmpty() || by.isEmpty()) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_DEADLINE_2);
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_DEADLINE_2);
         }
 
         LocalDateTime byTime = parseDateTime(by);
@@ -107,7 +114,7 @@ public class Parser {
         int commandLen = "event".length();
 
         if (fromIdx == -1 || toIdx == -1 || fromIdx > toIdx) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_EVENT_1);
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_EVENT_1);
         }
 
         String description = input.substring(commandLen, fromIdx).trim();
@@ -115,7 +122,7 @@ public class Parser {
         String to = input.substring(toIdx + toMarker.length()).trim();
 
         if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_EVENT_2);
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_EVENT_2);
         }
 
         LocalDateTime fromTime = parseDateTime(from);
@@ -131,7 +138,7 @@ public class Parser {
         int findLen = "find".length();
         String keyword = input.substring(findLen).trim();
         if (keyword.isEmpty()) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_FIND);
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_FIND);
         }
         return new FindCommand(keyword);
     }
@@ -183,31 +190,31 @@ public class Parser {
         TaskType type;
 
         if (line == null || line.trim().isEmpty()) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_FILE_FORMAT);
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_FILE_FORMAT);
         }
 
         if (args.length < 3) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_FILE_FORMAT);
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_FILE_FORMAT);
         }
 
         try {
             type = TaskType.fromCode(args[0].trim());
         } catch (InvalidCommandSnekException e) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_FILE_FORMAT);
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_FILE_FORMAT);
         }
 
         String doneField = args[1].trim();
 
         if (!doneField.equals("0") && !doneField.equals("1")) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_FILE_FORMAT);
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_FILE_FORMAT);
         }
 
         if (type == TaskType.DEADLINE && args.length < 4) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_FILE_FORMAT);
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_FILE_FORMAT);
         }
 
         if (type == TaskType.EVENT && args.length < 5) {
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_FILE_FORMAT);
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_FILE_FORMAT);
         }
 
         boolean isDone = doneField.equals("1");
@@ -244,7 +251,7 @@ public class Parser {
             }
             return event;
         default:
-            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_FILE_FORMAT);
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_FILE_FORMAT);
         }
     }
 }
