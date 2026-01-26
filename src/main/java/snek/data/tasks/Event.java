@@ -3,6 +3,9 @@ package snek.data.tasks;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents an Event task.
+ */
 public class Event extends Task {
     private String from;
     private String to;
@@ -10,12 +13,28 @@ public class Event extends Task {
     private LocalDateTime toTime = null;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("h:mma, MMM dd yyyy");
 
+    /**
+     * Constructs an Event task with the given description, from, and to.
+     *
+     * @param description The description of the event task.
+     * @param from The starting time or date of the event.
+     * @param to The ending time or date of the event.
+     */
     public Event(String description, String from, String to) {
         super(description, TaskType.EVENT);
         this.from = from;
         this.to = to;
     }
 
+    /**
+     * Constructs an Event task with the given description, from, to, fromTime, and toTime.
+     *
+     * @param description The description of the event task.
+     * @param from The starting time or date of the event.
+     * @param to The ending time or date of the event.
+     * @param fromTime The starting LocalDateTime of the event.
+     * @param toTime The ending LocalDateTime of the event.
+     */
     public Event(String description, String from, String to, LocalDateTime fromTime, LocalDateTime toTime) {
         super(description, TaskType.EVENT);
         this.from = from;
