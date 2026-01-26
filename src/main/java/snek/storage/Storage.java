@@ -33,7 +33,7 @@ public class Storage {
         }
     }
 
-    public ArrayList<Task> loadTasks() throws SnekException{
+    public ArrayList<Task> loadTasks() throws SnekException {
         ArrayList<Task> taskList = new ArrayList<>();
         try (Scanner scanner = new Scanner(file)) {
             while (scanner.hasNextLine()) {
@@ -47,7 +47,7 @@ public class Storage {
         return taskList;
     }
 
-    public void write(Task task) throws StorageSnekException{
+    public void write(Task task) throws StorageSnekException {
         try (FileWriter fw = new FileWriter(file, true)) {
             fw.write(task.getSaveString() + "\n");
             fw.close();
