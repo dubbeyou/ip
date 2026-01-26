@@ -1,43 +1,33 @@
 package snek.parser;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import snek.data.exception.SnekException;
-import snek.commands.Command;
-import snek.commands.DeadlineCommand;
-import snek.commands.TodoCommand;
-import snek.commands.EventCommand;
-import snek.data.tasks.Task;
-import snek.data.tasks.Todo;
-import snek.data.tasks.Deadline;
-import snek.data.tasks.Event;
-
 import static snek.common.Messages.MESSAGE_INVALID_COMMAND;
-import static snek.common.Messages.MESSAGE_INVALID_TODO;
 import static snek.common.Messages.MESSAGE_INVALID_DEADLINE_1;
 import static snek.common.Messages.MESSAGE_INVALID_DEADLINE_2;
 import static snek.common.Messages.MESSAGE_INVALID_EVENT_1;
 import static snek.common.Messages.MESSAGE_INVALID_EVENT_2;
 import static snek.common.Messages.MESSAGE_INVALID_FILE_FORMAT;
+import static snek.common.Messages.MESSAGE_INVALID_TODO;
 
 import java.time.LocalDateTime;
+
+import org.junit.jupiter.api.Test;
+
+import snek.commands.Command;
+import snek.commands.DeadlineCommand;
+import snek.commands.EventCommand;
+import snek.commands.TodoCommand;
+import snek.data.exception.SnekException;
+import snek.data.tasks.Deadline;
+import snek.data.tasks.Event;
+import snek.data.tasks.Task;
+import snek.data.tasks.Todo;
 
 public class ParserTest {
     @Test
     public void parseDateTime_variousFormats_success() {
-        String[] dateTimeInputs = {
-                "2026-1-25 23:30",
-                "2026-1-25 2330",
-                "2026/1/25 23:30",
-                "2026/1/25 2330",
-                "25-1-2026 23:30",
-                "25-1-2026 2330",
-                "25/1/2026 23:30",
-                "25/1/2026 2330",
-                "2026-01-25T23:30:00"
-        };
+        String[] dateTimeInputs = { "2026-1-25 23:30", "2026-1-25 2330", "2026/1/25 23:30", "2026/1/25 2330",
+                "25-1-2026 23:30", "25-1-2026 2330", "25/1/2026 23:30", "25/1/2026 2330", "2026-01-25T23:30:00" };
 
         for (String input : dateTimeInputs) {
             assertEquals(2026, Parser.parseDateTime(input).getYear());
@@ -47,13 +37,7 @@ public class ParserTest {
             assertEquals(30, Parser.parseDateTime(input).getMinute());
         }
 
-        String[] dateOnlyInputs = {
-                "2025-12-1",
-                "2025/12/1",
-                "1-12-2025",
-                "1/12/2025",
-                "2025-12-01"
-        };
+        String[] dateOnlyInputs = { "2025-12-1", "2025/12/1", "1-12-2025", "1/12/2025", "2025-12-01" };
 
         for (String input : dateOnlyInputs) {
             assertEquals(2025, Parser.parseDateTime(input).getYear());
@@ -175,8 +159,8 @@ public class ParserTest {
     @Test
     public void parse_validEventWithDateTime_returnsEventWithDateTime() throws SnekException {
         String input = "event project meeting /from 2/2/2026 1400 /to 2/2/2026 1600";
-        Command expected = new EventCommand("project meeting", "2/2/2026 1400", "2/2/2026 1600", 
-                LocalDateTime.of(2026, 2, 2, 14, 00), LocalDateTime.of(2026, 2, 2, 16, 00));
+        Command expected = new EventCommand("project meeting", "2/2/2026 1400", "2/2/2026 1600",
+                                        LocalDateTime.of(2026, 2, 2, 14, 00), LocalDateTime.of(2026, 2, 2, 16, 00));
         Command actual = Parser.parse(input);
         assertEquals(expected, actual);
     }
@@ -311,7 +295,7 @@ public class ParserTest {
     public void parseTaskFromFile_validEventUnmarkedWithDateTime_returnsEventWithDateTime() throws SnekException {
         String input = "E | 0 | project meeting | 2/2/2026 1400 | 2/2/2026 1600";
         Task expected = new Event("project meeting", "2/2/2026 1400", "2/2/2026 1600",
-                LocalDateTime.of(2026, 2, 2, 14, 00), LocalDateTime.of(2026, 2, 2, 16, 00));
+                                        LocalDateTime.of(2026, 2, 2, 14, 00), LocalDateTime.of(2026, 2, 2, 16, 00));
         Task actual = Parser.parseTaskFromFile(input);
         assertEquals(expected, actual);
     }
@@ -320,7 +304,7 @@ public class ParserTest {
     public void parseTaskFromFile_validEventMarkedWithDateTime_returnsEventWithDateTime() throws SnekException {
         String input = "E | 1 | project meeting | 2/2/2026 1400 | 2/2/2026 1600";
         Task expected = new Event("project meeting", "2/2/2026 1400", "2/2/2026 1600",
-                LocalDateTime.of(2026, 2, 2, 14, 00), LocalDateTime.of(2026, 2, 2, 16, 00));
+                                        LocalDateTime.of(2026, 2, 2, 14, 00), LocalDateTime.of(2026, 2, 2, 16, 00));
         expected.markAsDone();
         Task actual = Parser.parseTaskFromFile(input);
         assertEquals(expected, actual);

@@ -1,18 +1,17 @@
 package snek.ui;
 
-import java.io.PrintStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayInputStream;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static snek.common.Messages.MESSAGE_BYE;
+import static snek.common.Messages.MESSAGE_HELLO;
+import static snek.common.Messages.MESSAGE_LINEBREAK;
 
-import org.junit.jupiter.api.Test;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import static snek.common.Messages.MESSAGE_LINEBREAK;
-import static snek.common.Messages.MESSAGE_HELLO;
-import static snek.common.Messages.MESSAGE_BYE;
+import org.junit.jupiter.api.Test;
 
 public class UiTest {
     private final PrintStream originalOut = System.out;
