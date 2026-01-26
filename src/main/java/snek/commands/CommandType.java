@@ -19,7 +19,7 @@ public enum CommandType {
         if (token == null || token.trim().isEmpty()) {
             throw new InvalidCommandSnekException();
         }
-        
+
         try {
             return CommandType.valueOf(token.toUpperCase());
         } catch (IllegalArgumentException e) {

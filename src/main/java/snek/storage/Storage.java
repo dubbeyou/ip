@@ -23,7 +23,8 @@ public class Storage {
      * Constructs a Storage object with the specified file path.
      *
      * @param filepath The file path to load and save tasks.
-     * @throws StorageSnekException If there is an error creating the storage file.
+     * @throws StorageSnekException If there is an error creating the storage
+     * file.
      */
     public Storage(String filepath) throws StorageSnekException {
         this.file = new File(filepath);
@@ -46,9 +47,10 @@ public class Storage {
      * Loads tasks from the storage file.
      *
      * @return An ArrayList of tasks loaded from the file.
-     * @throws SnekException If there is an error reading the file or parsing tasks.
+     * @throws SnekException If there is an error reading the file or parsing
+     * tasks.
      */
-    public ArrayList<Task> loadTasks() throws SnekException{
+    public ArrayList<Task> loadTasks() throws SnekException {
         ArrayList<Task> taskList = new ArrayList<>();
         try (Scanner scanner = new Scanner(file)) {
             while (scanner.hasNextLine()) {
@@ -68,7 +70,7 @@ public class Storage {
      * @param task The task to write to the file.
      * @throws StorageSnekException If there is an error writing to the file.
      */
-    public void write(Task task) throws StorageSnekException{
+    public void write(Task task) throws StorageSnekException {
         try (FileWriter fw = new FileWriter(file, true)) {
             fw.write(task.getSaveString() + "\n");
             fw.close();

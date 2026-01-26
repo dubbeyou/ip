@@ -1,13 +1,13 @@
 package snek.storage;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.io.File;
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
 import snek.data.exception.SnekException;
 import snek.data.exception.StorageSnekException;
@@ -61,7 +61,6 @@ public class StorageTest {
         ArrayList<Task> loadedTasks = storage.loadTasks();
         assertEquals(1, loadedTasks.size());
         assertEquals(todo.getSaveString(), loadedTasks.get(0).getSaveString());
-
 
         Task todo2 = new Todo("play game");
         Task todo3 = new Todo("do homework");

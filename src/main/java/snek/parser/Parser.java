@@ -5,51 +5,39 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-import snek.common.Messages;
-import snek.data.exception.SnekException;
-import snek.data.exception.InvalidArgumentSnekException;
-import snek.data.exception.InvalidCommandSnekException;
-
+import snek.commands.ByeCommand;
 import snek.commands.Command;
 import snek.commands.CommandType;
+import snek.commands.DeadlineCommand;
+import snek.commands.DeleteCommand;
+import snek.commands.EventCommand;
 import snek.commands.ListCommand;
 import snek.commands.MarkCommand;
-import snek.commands.UnmarkCommand;
 import snek.commands.TodoCommand;
-import snek.commands.DeadlineCommand;
-import snek.commands.EventCommand;
-import snek.commands.DeleteCommand;
-import snek.commands.ByeCommand;
-
+import snek.commands.UnmarkCommand;
+import snek.common.Messages;
+import snek.data.exception.InvalidArgumentSnekException;
+import snek.data.exception.InvalidCommandSnekException;
+import snek.data.exception.SnekException;
+import snek.data.tasks.Deadline;
+import snek.data.tasks.Event;
 import snek.data.tasks.Task;
 import snek.data.tasks.TaskType;
 import snek.data.tasks.Todo;
-import snek.data.tasks.Deadline;
-import snek.data.tasks.Event;
 
 /**
  * Parser class for parsing user input and file data.
  */
 public class Parser {
-    private static final DateTimeFormatter[] DATE_TIME_FORMATS = {
-            DateTimeFormatter.ofPattern("yyyy-M-d H:m"),
-            DateTimeFormatter.ofPattern("yyyy-M-d Hmm"),
-            DateTimeFormatter.ofPattern("yyyy/M/d H:m"),
-            DateTimeFormatter.ofPattern("yyyy/M/d Hmm"),
-            DateTimeFormatter.ofPattern("d-M-yyyy H:m"),
-            DateTimeFormatter.ofPattern("d-M-yyyy Hmm"),
-            DateTimeFormatter.ofPattern("d/M/yyyy H:m"),
-            DateTimeFormatter.ofPattern("d/M/yyyy Hmm"),
-            DateTimeFormatter.ISO_LOCAL_DATE_TIME
-    };
+    private static final DateTimeFormatter[] DATE_TIME_FORMATS = { DateTimeFormatter.ofPattern("yyyy-M-d H:m"),
+            DateTimeFormatter.ofPattern("yyyy-M-d Hmm"), DateTimeFormatter.ofPattern("yyyy/M/d H:m"),
+            DateTimeFormatter.ofPattern("yyyy/M/d Hmm"), DateTimeFormatter.ofPattern("d-M-yyyy H:m"),
+            DateTimeFormatter.ofPattern("d-M-yyyy Hmm"), DateTimeFormatter.ofPattern("d/M/yyyy H:m"),
+            DateTimeFormatter.ofPattern("d/M/yyyy Hmm"), DateTimeFormatter.ISO_LOCAL_DATE_TIME };
 
-    private static final DateTimeFormatter[] DATE_FORMATS = {
-            DateTimeFormatter.ofPattern("yyyy-M-d"),
-            DateTimeFormatter.ofPattern("yyyy/M/d"),
-            DateTimeFormatter.ofPattern("d-M-yyyy"),
-            DateTimeFormatter.ofPattern("d/M/yyyy"),
-            DateTimeFormatter.ISO_LOCAL_DATE
-    };
+    private static final DateTimeFormatter[] DATE_FORMATS = { DateTimeFormatter.ofPattern("yyyy-M-d"),
+            DateTimeFormatter.ofPattern("yyyy/M/d"), DateTimeFormatter.ofPattern("d-M-yyyy"),
+            DateTimeFormatter.ofPattern("d/M/yyyy"), DateTimeFormatter.ISO_LOCAL_DATE };
 
     /**
      * Parses a date-time string into a LocalDateTime object.
@@ -62,15 +50,17 @@ public class Parser {
         for (DateTimeFormatter formatter : DATE_TIME_FORMATS) {
             try {
                 return LocalDateTime.parse(input, formatter);
-            } catch (DateTimeParseException ignored) {}
+            } catch (DateTimeParseException ignored) {
+            }
         }
 
         for (DateTimeFormatter formatter : DATE_FORMATS) {
             try {
                 return LocalDate.parse(input, formatter).atStartOfDay();
-            } catch (DateTimeParseException ignored) {}
+            } catch (DateTimeParseException ignored) {
+            }
         }
-        
+
         return null;
     }
 
@@ -195,7 +185,7 @@ public class Parser {
         }
 
         String doneField = args[1].trim();
-        
+
         if (!doneField.equals("0") && !doneField.equals("1")) {
             throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_FILE_FORMAT);
         }

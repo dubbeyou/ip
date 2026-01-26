@@ -47,7 +47,7 @@ public class Snek {
                 isExit = c.isExit();
             } catch (SnekException e) {
                 ui.printError(e.getMessage());
-            } 
+            }
         }
     }
 

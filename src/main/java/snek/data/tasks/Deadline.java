@@ -56,10 +56,8 @@ public class Deadline extends Task {
         if (obj instanceof Deadline) {
             Deadline other = (Deadline) obj;
             boolean isByTimeEqual = (this.byTime == null && other.byTime == null)
-                    || (this.byTime != null && this.byTime.equals(other.byTime));
-            return super.equals(obj)
-                    && this.by.equals(other.by)
-                    && isByTimeEqual;
+                                            || (this.byTime != null && this.byTime.equals(other.byTime));
+            return super.equals(obj) && this.by.equals(other.by) && isByTimeEqual;
         }
         return false;
     }

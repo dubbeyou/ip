@@ -2,15 +2,15 @@ package snek.commands;
 
 import snek.data.exception.SnekException;
 import snek.data.tasks.TaskList;
-import snek.ui.Ui;
 import snek.storage.Storage;
+import snek.ui.Ui;
 
 /**
  * Abstract class representing a command in the Snek application.
  */
 public abstract class Command {
     public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws SnekException;
-    
+
     /**
      * Indicates whether this command will exit the application.
      *

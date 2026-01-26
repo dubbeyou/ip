@@ -3,9 +3,9 @@ package snek.commands;
 import snek.common.Messages;
 import snek.data.exception.SnekException;
 import snek.data.tasks.TaskList;
-import snek.ui.Ui;
-import snek.storage.Storage;
 import snek.data.tasks.Todo;
+import snek.storage.Storage;
+import snek.ui.Ui;
 
 /**
  * Command to add a todo task to the Snek application.
