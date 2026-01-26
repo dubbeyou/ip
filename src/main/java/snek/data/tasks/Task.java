@@ -11,6 +11,15 @@ public class Task {
         this.type = type;
     }
 
+    /**
+     * Gets the description of the task.
+     * 
+     * @return the description of the task.
+     */
+    public String getDescription() {
+        return this.description;
+    }
+
     public String getStatusIcon() {
         return (isDone ? "X" : " "); // mark done task with X
     }
@@ -43,9 +52,7 @@ public class Task {
         }
         if (obj instanceof Task) {
             Task other = (Task) obj;
-            return this.description.equals(other.description)
-                    && this.isDone == other.isDone
-                    && this.type == other.type;
+            return this.description.equals(other.description) && this.isDone == other.isDone && this.type == other.type;
         }
         return false;
     }
