@@ -3,16 +3,32 @@ package snek.data.tasks;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Represents a Deadline task.
+ */
 public class Deadline extends Task {
     private String by;
     private LocalDateTime byTime = null;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("h:mma, MMM dd yyyy");
 
+    /**
+     * Constructs a Deadline task with the given description and by.
+     *
+     * @param description The description of the deadline task.
+     * @param by The due time or date of the deadline.
+     */
     public Deadline(String description, String by) {
         super(description, TaskType.DEADLINE);
         this.by = by;
     }
 
+    /**
+     * Constructs a Deadline task with the given description, by, and byTime.
+     *
+     * @param description The description of the deadline task.
+     * @param by The due time or date of the deadline.
+     * @param byTime The due LocalDateTime of the deadline.
+     */
     public Deadline(String description, String by, LocalDateTime byTime) {
         super(description, TaskType.DEADLINE);
         this.by = by;

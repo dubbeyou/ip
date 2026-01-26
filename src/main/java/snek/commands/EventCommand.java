@@ -9,6 +9,9 @@ import snek.ui.Ui;
 import snek.storage.Storage;
 import snek.data.tasks.Event;
 
+/**
+ * Command to add an event task to the Snek application.
+ */
 public class EventCommand extends Command {
     private final String description;
     private final String from;
@@ -16,6 +19,13 @@ public class EventCommand extends Command {
     private final LocalDateTime fromTime;
     private final LocalDateTime toTime;
 
+    /**
+     * Constructs an EventCommand with the given description, from, and to.
+     *
+     * @param description The description of the event task.
+     * @param from The starting time or date of the event.
+     * @param to The ending time or date of the event.
+     */
     public EventCommand(String description, String from, String to) {
         this.description = description;
         this.from = from;
@@ -24,6 +34,15 @@ public class EventCommand extends Command {
         this.toTime = null;
     }
 
+    /**
+     * Constructs an EventCommand with the given description, from, to, fromTime, and toTime.
+     *
+     * @param description The description of the event task.
+     * @param from The starting time or date of the event.
+     * @param to The ending time or date of the event.
+     * @param fromTime The starting LocalDateTime of the event.
+     * @param toTime The ending LocalDateTime of the event.
+     */
     public EventCommand(String description, String from, String to, LocalDateTime fromTime, LocalDateTime toTime) {
         this.description = description;
         this.from = from;

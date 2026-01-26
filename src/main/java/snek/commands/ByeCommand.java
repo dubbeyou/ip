@@ -4,6 +4,9 @@ import snek.data.tasks.TaskList;
 import snek.ui.Ui;
 import snek.storage.Storage;
 
+/**
+ * Command to exit the Snek application.
+ */
 public class ByeCommand extends Command {
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {

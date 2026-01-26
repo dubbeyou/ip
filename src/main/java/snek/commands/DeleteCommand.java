@@ -8,13 +8,21 @@ import snek.ui.Ui;
 import snek.storage.Storage;
 import snek.data.tasks.Task;
 
+/**
+ * Command to delete a task from the Snek application.
+ */
 public class DeleteCommand extends Command {
     private final String taskNumber;
 
+    /**
+     * Constructs a DeleteCommand with the given task number.
+     *
+     * @param taskNumber The task number to delete.
+     */
     public DeleteCommand(String taskNumber) {
         this.taskNumber = taskNumber;
     }
-
+    
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
         int index;

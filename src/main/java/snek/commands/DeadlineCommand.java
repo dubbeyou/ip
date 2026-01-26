@@ -9,21 +9,37 @@ import snek.ui.Ui;
 import snek.storage.Storage;
 import snek.data.tasks.Deadline;
 
+/**
+ * Command to add a deadline task to the Snek application.
+ */
 public class DeadlineCommand extends Command {
     private final String description;
     private final String by;
     private final LocalDateTime byTime;
 
-    public DeadlineCommand(String description, String by, LocalDateTime byTime) {
-        this.description = description;
-        this.by = by;
-        this.byTime = byTime;
-    }
-
+    /**
+     * Constructs a DeadlineCommand with the given description and by.
+     *
+     * @param description The description of the deadline task.
+     * @param by The due time or date of the deadline.
+     */
     public DeadlineCommand(String description, String by) {
         this.description = description;
         this.by = by;
         this.byTime = null;
+    }
+
+    /**
+     * Constructs a DeadlineCommand with the given description, by, and byTime.
+     *
+     * @param description The description of the deadline task.
+     * @param by The due time or date of the deadline.
+     * @param byTime The due LocalDateTime of the deadline.
+     */
+    public DeadlineCommand(String description, String by, LocalDateTime byTime) {
+        this.description = description;
+        this.by = by;
+        this.byTime = byTime;
     }
 
     @Override

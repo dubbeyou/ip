@@ -27,6 +27,9 @@ import snek.data.tasks.Todo;
 import snek.data.tasks.Deadline;
 import snek.data.tasks.Event;
 
+/**
+ * Parser class for parsing user input and file data.
+ */
 public class Parser {
     private static final DateTimeFormatter[] DATE_TIME_FORMATS = {
             DateTimeFormatter.ofPattern("yyyy-M-d H:m"),
@@ -48,6 +51,13 @@ public class Parser {
             DateTimeFormatter.ISO_LOCAL_DATE
     };
 
+    /**
+     * Parses a date-time string into a LocalDateTime object.
+     * Supports multiple date and date-time formats.
+     *
+     * @param input The date-time string to parse.
+     * @return A LocalDateTime object if parsing is successful; null otherwise.
+     */
     public static LocalDateTime parseDateTime(String input) {
         for (DateTimeFormatter formatter : DATE_TIME_FORMATS) {
             try {
@@ -126,6 +136,13 @@ public class Parser {
         return new EventCommand(description, from, to);
     }
 
+    /**
+     * Parses a user input string into a Command object.
+     *
+     * @param input The user input string.
+     * @return A Command object representing the parsed command.
+     * @throws SnekException If the command is invalid or has invalid arguments.
+     */
     public static Command parse(String input) throws SnekException {
         input = input.trim();
         String[] args = input.split("[\\s]");
@@ -152,6 +169,13 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses a line from the storage file into a Task object.
+     *
+     * @param line The line from the storage file.
+     * @return A Task object representing the parsed task.
+     * @throws SnekException If the line has an invalid format.
+     */
     public static Task parseTaskFromFile(String line) throws SnekException {
         String[] args = line.trim().split("\\|");
         TaskType type;

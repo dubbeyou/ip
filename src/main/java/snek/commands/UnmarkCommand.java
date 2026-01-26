@@ -7,9 +7,17 @@ import snek.data.tasks.TaskList;
 import snek.ui.Ui;
 import snek.storage.Storage;
 
+/**
+ * Command to unmark a task as done in the Snek application.
+ */
 public class UnmarkCommand extends Command {
     private final String taskNumber;
 
+    /**
+     * Constructs an UnmarkCommand with the given task number.
+     *
+     * @param taskNumber The task number to unmark as done.
+     */
     public UnmarkCommand(String taskNumber) {
         this.taskNumber = taskNumber;
     }
