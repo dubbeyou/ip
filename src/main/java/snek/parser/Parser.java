@@ -127,6 +127,15 @@ public class Parser {
         return new EventCommand(description, from, to);
     }
 
+    private static Command handleFind(String input) throws SnekException {
+        int findLen = "find".length();
+        String keyword = input.substring(findLen).trim();
+        if (keyword.isEmpty()) {
+            throw new InvalidArgumentSnekException(Messages.MESSAGE_INVALID_FIND);
+        }
+        return new FindCommand(keyword);
+    }
+
     /**
      * Parses a user input string into a Command object.
      *
@@ -154,7 +163,7 @@ public class Parser {
         case DELETE:
             return new DeleteCommand(args[1]);
         case FIND:
-            return new FindCommand(args[1]);
+            return handleFind(input);
         case BYE:
             return new ByeCommand();
         default:
