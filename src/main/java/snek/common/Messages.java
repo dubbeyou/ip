@@ -3,7 +3,6 @@ package snek.common;
 /**
  * Container for user visible messages.
  */
-
 public class Messages {
     public static final String MESSAGE_LINEBREAK = "------------------------------------------------------------";
     public static final String MESSAGE_HELLO = "Ssss... Hello I'm Snek! Ssss...\nWhatsss cans I do for you todayss...?";
