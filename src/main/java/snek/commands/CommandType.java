@@ -6,7 +6,7 @@ import snek.data.exception.InvalidCommandSnekException;
  * Enum representing the types of commands in the Snek application.
  */
 public enum CommandType {
-    LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, BYE;
+    LIST, MARK, UNMARK, TODO, DEADLINE, EVENT, DELETE, FIND, BYE;
 
     /**
      * Returns the CommandType corresponding to the given token.

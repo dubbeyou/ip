@@ -24,4 +24,6 @@ public class Messages {
     public static final String MESSAGE_DELETE_TASK = "Ssss... I'ves removed thisss task:\n\t%s\nYou now havesss %d task(s) in your listssss.";
     public static final String MESSAGE_INVALID_FILE_FORMAT = "Ssss... Invalid file format in storage!";
     public static final String MESSAGE_INVALID_COMMAND = "Ssssory, I don't undersssstand the commandsss...";
+    public static final String MESSAGE_NO_MATCHING_TASKS = "Ssss... No matching tasksss found!";
+    public static final String MESSAGE_FOUND_MATCHING_TASKS = "Here are the matching tasks in your list:\n%s";
 }

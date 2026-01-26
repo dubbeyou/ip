@@ -11,6 +11,7 @@ import snek.commands.CommandType;
 import snek.commands.DeadlineCommand;
 import snek.commands.DeleteCommand;
 import snek.commands.EventCommand;
+import snek.commands.FindCommand;
 import snek.commands.ListCommand;
 import snek.commands.MarkCommand;
 import snek.commands.TodoCommand;
@@ -40,8 +41,8 @@ public class Parser {
             DateTimeFormatter.ofPattern("d/M/yyyy"), DateTimeFormatter.ISO_LOCAL_DATE };
 
     /**
-     * Parses a date-time string into a LocalDateTime object.
-     * Supports multiple date and date-time formats.
+     * Parses a date-time string into a LocalDateTime object. Supports multiple
+     * date and date-time formats.
      *
      * @param input The date-time string to parse.
      * @return A LocalDateTime object if parsing is successful; null otherwise.
@@ -152,6 +153,8 @@ public class Parser {
             return handleEvent(input);
         case DELETE:
             return new DeleteCommand(args[1]);
+        case FIND:
+            return new FindCommand(args[1]);
         case BYE:
             return new ByeCommand();
         default:
