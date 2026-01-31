@@ -26,7 +26,7 @@ public class MarkCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
         int index;
         try {
             index = Integer.valueOf(taskNumber);
@@ -37,7 +37,7 @@ public class MarkCommand extends Command {
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_MARK);
         }
         tasks.getIndex(index).markAsDone();
-        ui.print(String.format(MESSAGE_MARK_TASK, tasks.getIndex(index)));
         storage.overwrite(tasks.getTasks());
+        return String.format(MESSAGE_MARK_TASK, tasks.getIndex(index));
     }
 }

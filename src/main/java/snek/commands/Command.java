@@ -9,7 +9,7 @@ import snek.ui.Ui;
  * Abstract class representing a command in the Snek application.
  */
 public abstract class Command {
-    public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws SnekException;
+    public abstract String execute(TaskList tasks, Ui ui, Storage storage) throws SnekException;
 
     /**
      * Indicates whether this command will exit the application.

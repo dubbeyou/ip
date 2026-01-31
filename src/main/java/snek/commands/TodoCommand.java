@@ -24,11 +24,11 @@ public class TodoCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
         Todo todo = new Todo(description);
         tasks.add(todo);
-        ui.print(String.format(MESSAGE_ADD_TASK, todo, tasks.size()));
         storage.write(todo);
+        return String.format(MESSAGE_ADD_TASK, todo, tasks.size());
     }
 
     @Override

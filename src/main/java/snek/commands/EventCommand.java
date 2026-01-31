@@ -54,18 +54,17 @@ public class EventCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
         if (fromTime != null && toTime != null) {
             Event event = new Event(description, from, to, fromTime, toTime);
             tasks.add(event);
-            ui.print(String.format(MESSAGE_ADD_TASK, event, tasks.size()));
             storage.write(event);
-            return;
+            return String.format(MESSAGE_ADD_TASK, event, tasks.size());
         }
         Event event = new Event(description, from, to);
         tasks.add(event);
-        ui.print(String.format(MESSAGE_ADD_TASK, event, tasks.size()));
         storage.write(event);
+        return String.format(MESSAGE_ADD_TASK, event, tasks.size());
     }
 
     @Override

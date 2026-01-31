@@ -27,7 +27,7 @@ public class FindCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
         ArrayList<Task> matchedTasks = new ArrayList<>();
         for (Task task : tasks.getTasks()) {
             if (task.getDescription().contains(keyword)) {
@@ -36,10 +36,10 @@ public class FindCommand extends Command {
         }
 
         if (matchedTasks.isEmpty()) {
-            ui.print(MESSAGE_NO_MATCHING_TASKS);
+            return MESSAGE_NO_MATCHING_TASKS;
         } else {
             TaskList matchedTasksList = new TaskList(matchedTasks);
-            ui.print(String.format(MESSAGE_FOUND_MATCHING_TASKS, matchedTasksList.getString()));
+            return String.format(MESSAGE_FOUND_MATCHING_TASKS, matchedTasksList.getString());
         }
     }
 }

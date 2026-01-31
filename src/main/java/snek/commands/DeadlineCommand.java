@@ -44,18 +44,17 @@ public class DeadlineCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
         if (byTime != null) {
             Deadline deadline = new Deadline(description, by, byTime);
             tasks.add(deadline);
-            ui.print(String.format(MESSAGE_ADD_TASK, deadline, tasks.size()));
             storage.write(deadline);
-            return;
+            return String.format(MESSAGE_ADD_TASK, deadline, tasks.size());
         }
         Deadline deadline = new Deadline(description, by);
         tasks.add(deadline);
-        ui.print(String.format(MESSAGE_ADD_TASK, deadline, tasks.size()));
         storage.write(deadline);
+        return String.format(MESSAGE_ADD_TASK, deadline, tasks.size());
     }
 
     @Override

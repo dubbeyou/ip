@@ -1,5 +1,7 @@
 package snek.commands;
 
+import static snek.common.Messages.MESSAGE_BYE;
+
 import snek.data.tasks.TaskList;
 import snek.storage.Storage;
 import snek.ui.Ui;
@@ -9,8 +11,8 @@ import snek.ui.Ui;
  */
 public class ByeCommand extends Command {
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
-        ui.printByeMessage();
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
+        return MESSAGE_BYE;
     }
 
     @Override
