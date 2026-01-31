@@ -59,6 +59,7 @@ public class Parser {
             try {
                 return LocalDateTime.parse(input, formatter);
             } catch (DateTimeParseException ignored) {
+                continue;
             }
         }
 
@@ -66,6 +67,7 @@ public class Parser {
             try {
                 return LocalDate.parse(input, formatter).atStartOfDay();
             } catch (DateTimeParseException ignored) {
+                continue;
             }
         }
 
