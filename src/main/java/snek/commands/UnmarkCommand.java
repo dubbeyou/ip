@@ -8,7 +8,6 @@ import snek.data.exception.InvalidArgumentSnekException;
 import snek.data.exception.SnekException;
 import snek.data.tasks.TaskList;
 import snek.storage.Storage;
-import snek.ui.Ui;
 
 /**
  * Command to unmark a task as done in the Snek application.
@@ -26,7 +25,7 @@ public class UnmarkCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
+    public String execute(TaskList tasks, Storage storage) throws SnekException {
         int index;
         try {
             index = Integer.valueOf(taskNumber);
@@ -37,7 +36,7 @@ public class UnmarkCommand extends Command {
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_UNMARK);
         }
         tasks.getIndex(index).unmarkAsDone();
-        ui.print(String.format(MESSAGE_UNMARK_TASK, tasks.getIndex(index)));
         storage.overwrite(tasks.getTasks());
+        return String.format(MESSAGE_UNMARK_TASK, tasks.getIndex(index));
     }
 }

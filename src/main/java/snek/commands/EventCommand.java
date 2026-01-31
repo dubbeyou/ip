@@ -8,7 +8,6 @@ import snek.data.exception.SnekException;
 import snek.data.tasks.Event;
 import snek.data.tasks.TaskList;
 import snek.storage.Storage;
-import snek.ui.Ui;
 
 /**
  * Command to add an event task to the Snek application.
@@ -54,18 +53,17 @@ public class EventCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
+    public String execute(TaskList tasks, Storage storage) throws SnekException {
         if (fromTime != null && toTime != null) {
             Event event = new Event(description, from, to, fromTime, toTime);
             tasks.add(event);
-            ui.print(String.format(MESSAGE_ADD_TASK, event, tasks.size()));
             storage.write(event);
-            return;
+            return String.format(MESSAGE_ADD_TASK, event, tasks.size());
         }
         Event event = new Event(description, from, to);
         tasks.add(event);
-        ui.print(String.format(MESSAGE_ADD_TASK, event, tasks.size()));
         storage.write(event);
+        return String.format(MESSAGE_ADD_TASK, event, tasks.size());
     }
 
     @Override

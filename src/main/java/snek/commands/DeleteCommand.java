@@ -8,7 +8,6 @@ import snek.data.exception.SnekException;
 import snek.data.tasks.Task;
 import snek.data.tasks.TaskList;
 import snek.storage.Storage;
-import snek.ui.Ui;
 
 /**
  * Command to delete a task from the Snek application.
@@ -26,7 +25,7 @@ public class DeleteCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
+    public String execute(TaskList tasks, Storage storage) throws SnekException {
         int index;
         try {
             index = Integer.valueOf(taskNumber);
@@ -34,7 +33,7 @@ public class DeleteCommand extends Command {
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_TASK);
         }
         Task removedTask = tasks.delete(index);
-        ui.print(String.format(MESSAGE_DELETE_TASK, removedTask, tasks.size()));
         storage.overwrite(tasks.getTasks());
+        return String.format(MESSAGE_DELETE_TASK, removedTask, tasks.size());
     }
 }

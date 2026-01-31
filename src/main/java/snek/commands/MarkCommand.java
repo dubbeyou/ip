@@ -8,7 +8,6 @@ import snek.data.exception.InvalidArgumentSnekException;
 import snek.data.exception.SnekException;
 import snek.data.tasks.TaskList;
 import snek.storage.Storage;
-import snek.ui.Ui;
 
 /**
  * Command to mark a task as done in the Snek application.
@@ -26,7 +25,7 @@ public class MarkCommand extends Command {
     }
 
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
+    public String execute(TaskList tasks, Storage storage) throws SnekException {
         int index;
         try {
             index = Integer.valueOf(taskNumber);
@@ -37,7 +36,7 @@ public class MarkCommand extends Command {
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_MARK);
         }
         tasks.getIndex(index).markAsDone();
-        ui.print(String.format(MESSAGE_MARK_TASK, tasks.getIndex(index)));
         storage.overwrite(tasks.getTasks());
+        return String.format(MESSAGE_MARK_TASK, tasks.getIndex(index));
     }
 }
