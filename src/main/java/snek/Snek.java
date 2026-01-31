@@ -52,10 +52,16 @@ public class Snek {
         }
     }
 
-    public String getResponse(String input) {
+    /**
+     * Gets the response from Snek for a given command.
+     *
+     * @param command The command to be executed.
+     * @return The response string from Snek.
+     */
+    public String getResponse(Command command) {
         try {
-            Command c = Parser.parse(input);
-            return c.execute(tasks, ui, storage);
+            String response = command.execute(tasks, ui, storage);
+            return response;
         } catch (SnekException e) {
             return e.getMessage();
         }
