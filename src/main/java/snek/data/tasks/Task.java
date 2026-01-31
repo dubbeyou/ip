@@ -22,7 +22,7 @@ public class Task {
 
     /**
      * Gets the description of the task.
-     * 
+     *
      * @return the description of the task.
      */
     public String getDescription() {
@@ -32,7 +32,7 @@ public class Task {
     /**
      * Gets the status icon of the task based on its completion status. "X" if
      * done, " " if not done.
-     * 
+     *
      * @return The status icon of the task.
      */
     public String getStatusIcon() {

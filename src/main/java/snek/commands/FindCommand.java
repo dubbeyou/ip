@@ -19,7 +19,7 @@ public class FindCommand extends Command {
 
     /**
      * Constructs a FindCommand with the specified keyword.
-     * 
+     *
      * @param keyword The keyword to search for in task descriptions.
      */
     public FindCommand(String keyword) {

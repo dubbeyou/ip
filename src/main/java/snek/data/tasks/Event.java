@@ -7,11 +7,11 @@ import java.time.format.DateTimeFormatter;
  * Represents an Event task.
  */
 public class Event extends Task {
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("h:mma, MMM dd yyyy");
     private String from;
     private String to;
     private LocalDateTime fromTime = null;
     private LocalDateTime toTime = null;
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("h:mma, MMM dd yyyy");
 
     /**
      * Constructs an Event task with the given description, from, and to.
@@ -27,7 +27,8 @@ public class Event extends Task {
     }
 
     /**
-     * Constructs an Event task with the given description, from, to, fromTime, and toTime.
+     * Constructs an Event task with the given description, from, to, fromTime,
+     * and toTime.
      *
      * @param description The description of the event task.
      * @param from The starting time or date of the event.

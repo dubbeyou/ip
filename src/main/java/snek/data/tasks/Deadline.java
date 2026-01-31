@@ -7,9 +7,9 @@ import java.time.format.DateTimeFormatter;
  * Represents a Deadline task.
  */
 public class Deadline extends Task {
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("h:mma, MMM dd yyyy");
     private String by;
     private LocalDateTime byTime = null;
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("h:mma, MMM dd yyyy");
 
     /**
      * Constructs a Deadline task with the given description and by.
