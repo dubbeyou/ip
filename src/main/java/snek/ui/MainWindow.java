@@ -1,5 +1,7 @@
 package snek.ui;
 
+import static snek.common.Messages.MESSAGE_HELLO;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -39,6 +41,14 @@ public class MainWindow extends AnchorPane {
     /** Injects the Snek instance */
     public void setSnek(Snek s) {
         snek = s;
+        showWelcomeMessage();
+    }
+
+    /**
+     * Displays the welcome message when the application starts.
+     */
+    private void showWelcomeMessage() {
+        dialogContainer.getChildren().add(DialogBox.getSnekDialog(MESSAGE_HELLO, snekImage));
     }
 
     /**
