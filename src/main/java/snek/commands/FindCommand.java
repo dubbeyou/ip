@@ -9,7 +9,6 @@ import snek.data.exception.SnekException;
 import snek.data.tasks.Task;
 import snek.data.tasks.TaskList;
 import snek.storage.Storage;
-import snek.ui.Ui;
 
 /**
  * Command to find tasks containing a specific keyword.
@@ -27,7 +26,7 @@ public class FindCommand extends Command {
     }
 
     @Override
-    public String execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
+    public String execute(TaskList tasks, Storage storage) throws SnekException {
         ArrayList<Task> matchedTasks = new ArrayList<>();
         for (Task task : tasks.getTasks()) {
             if (task.getDescription().contains(keyword)) {

@@ -8,7 +8,6 @@ import snek.data.exception.SnekException;
 import snek.data.tasks.Deadline;
 import snek.data.tasks.TaskList;
 import snek.storage.Storage;
-import snek.ui.Ui;
 
 /**
  * Command to add a deadline task to the Snek application.
@@ -44,7 +43,7 @@ public class DeadlineCommand extends Command {
     }
 
     @Override
-    public String execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
+    public String execute(TaskList tasks, Storage storage) throws SnekException {
         if (byTime != null) {
             Deadline deadline = new Deadline(description, by, byTime);
             tasks.add(deadline);

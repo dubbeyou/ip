@@ -6,7 +6,6 @@ import snek.data.exception.SnekException;
 import snek.data.tasks.TaskList;
 import snek.data.tasks.Todo;
 import snek.storage.Storage;
-import snek.ui.Ui;
 
 /**
  * Command to add a todo task to the Snek application.
@@ -24,7 +23,7 @@ public class TodoCommand extends Command {
     }
 
     @Override
-    public String execute(TaskList tasks, Ui ui, Storage storage) throws SnekException {
+    public String execute(TaskList tasks, Storage storage) throws SnekException {
         Todo todo = new Todo(description);
         tasks.add(todo);
         storage.write(todo);
