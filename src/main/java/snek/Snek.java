@@ -52,6 +52,15 @@ public class Snek {
         }
     }
 
+    public String getResponse(String input) {
+        try {
+            Command c = Parser.parse(input);
+            return c.execute(tasks, ui, storage);
+        } catch (SnekException e) {
+            return e.getMessage();
+        }
+    }
+
     /**
      * The main method to start the Snek application.
      *
