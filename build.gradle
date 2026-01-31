@@ -44,7 +44,7 @@ test {
 }
 
 application {
-    mainClass.set("snek.Snek")
+    mainClass.set("snek.Launcher")
 }
 
 shadowJar {
