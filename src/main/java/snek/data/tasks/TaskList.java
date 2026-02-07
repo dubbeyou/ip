@@ -25,6 +25,8 @@ public class TaskList {
      * @param tasks The list of tasks to initialise the TaskList with.
      */
     public TaskList(ArrayList<Task> tasks) {
+        assert tasks != null : "Tasks should not be null.";
+
         this.tasks = tasks;
     }
 
@@ -53,6 +55,8 @@ public class TaskList {
      * @return The updated list of tasks.
      */
     public ArrayList<Task> add(Task task) {
+        assert task != null : "Task to add should not be null.";
+
         tasks.add(task);
         return tasks;
     }
@@ -93,6 +97,8 @@ public class TaskList {
      * @return A string representing the task list.
      */
     public String getString() {
+        assert tasks != null : "Tasks should not be null.";
+
         String res = "";
         for (int i = 0; i < tasks.size(); i++) {
             res += (i + 1) + ". " + tasks.get(i);
