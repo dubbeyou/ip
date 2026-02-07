@@ -34,10 +34,18 @@ public class Storage {
     }
 
     private void createFile() throws StorageSnekException {
+        createParentDir();
+        createNewFile();
+    }
+
+    private void createParentDir() {
         File parentDir = file.getParentFile();
         if (parentDir != null && !parentDir.exists()) {
             parentDir.mkdirs();
         }
+    }
+
+    private void createNewFile() throws StorageSnekException {
         try {
             file.createNewFile();
         } catch (IOException e) {
@@ -55,15 +63,19 @@ public class Storage {
     public ArrayList<Task> loadTasks() throws SnekException {
         ArrayList<Task> taskList = new ArrayList<>();
         try (Scanner scanner = new Scanner(file)) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                Task task = Parser.parseTaskFromFile(line);
-                taskList.add(task);
-            }
+            readAllTasks(scanner, taskList);
         } catch (FileNotFoundException ignore) {
             return new ArrayList<>();
         }
         return taskList;
+    }
+
+    private void readAllTasks(Scanner scanner, ArrayList<Task> taskList) throws SnekException {
+        while (scanner.hasNextLine()) {
+            String line = scanner.nextLine();
+            Task task = Parser.parseTaskFromFile(line);
+            taskList.add(task);
+        }
     }
 
     /**
@@ -75,7 +87,6 @@ public class Storage {
     public void write(Task task) throws StorageSnekException {
         try (FileWriter fw = new FileWriter(file, true)) {
             fw.write(task.getSaveString() + "\n");
-            fw.close();
         } catch (IOException e) {
             throw new StorageSnekException(MESSAGE_ERROR_WRITE);
         }
@@ -89,12 +100,15 @@ public class Storage {
      */
     public void overwrite(ArrayList<Task> taskList) throws StorageSnekException {
         try (FileWriter fw = new FileWriter(file, false)) {
-            for (Task task : taskList) {
-                fw.write(task.getSaveString() + "\n");
-            }
-            fw.close();
+            writeAllTasks(fw, taskList);
         } catch (IOException e) {
             throw new StorageSnekException(MESSAGE_ERROR_WRITE);
+        }
+    }
+
+    private void writeAllTasks(FileWriter fw, ArrayList<Task> taskList) throws IOException {
+        for (Task task : taskList) {
+            fw.write(task.getSaveString() + "\n");
         }
     }
 }
