@@ -8,6 +8,8 @@ import static snek.common.Messages.MESSAGE_INVALID_EVENT_1;
 import static snek.common.Messages.MESSAGE_INVALID_EVENT_2;
 import static snek.common.Messages.MESSAGE_INVALID_FILE_FORMAT;
 import static snek.common.Messages.MESSAGE_INVALID_TODO;
+import static snek.common.Messages.MESSAGE_INVALID_VIEW;
+import static snek.common.Messages.MESSAGE_INVALID_VIEW_DATE;
 
 import java.time.LocalDateTime;
 
@@ -17,6 +19,7 @@ import snek.commands.Command;
 import snek.commands.DeadlineCommand;
 import snek.commands.EventCommand;
 import snek.commands.TodoCommand;
+import snek.commands.ViewCommand;
 import snek.data.exception.SnekException;
 import snek.data.tasks.Deadline;
 import snek.data.tasks.Event;
@@ -220,6 +223,34 @@ public class ParserTest {
             Parser.parse(input);
         } catch (SnekException e) {
             assertEquals(MESSAGE_INVALID_EVENT_2, e.getMessage());
+        }
+    }
+
+    @Test
+    public void parse_validViewDate_returnsViewCommand() throws SnekException {
+        String input = "view 2026-2-7";
+        Command expected = new ViewCommand(LocalDateTime.of(2026, 2, 7, 0, 0));
+        Command actual = Parser.parse(input);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void parse_invalidViewMissingDate_throwsException() {
+        String input = "view   ";
+        try {
+            Parser.parse(input);
+        } catch (SnekException e) {
+            assertEquals(MESSAGE_INVALID_VIEW, e.getMessage());
+        }
+    }
+
+    @Test
+    public void parse_invalidViewDate_throwsException() {
+        String input = "view someday";
+        try {
+            Parser.parse(input);
+        } catch (SnekException e) {
+            assertEquals(MESSAGE_INVALID_VIEW_DATE, e.getMessage());
         }
     }
 

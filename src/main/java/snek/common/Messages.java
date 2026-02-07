@@ -22,6 +22,9 @@ public class Messages {
     public static final String MESSAGE_DELETE_TASK = "Ssss... I'ves removed thisss task:\n\t%s\nYou now havesss %d task(s) in your listssss.";
     public static final String MESSAGE_FOUND_MATCHING_TASKS = "Here are the matching tasks in your list:\n%s";
     public static final String MESSAGE_NO_MATCHING_TASKS = "Ssss... No matching tasksss found!";
+    public static final String MESSAGE_VIEW_TASKS = "Here are the tasks on %s:\n%s";
+    public static final String MESSAGE_NO_TASKS_ON_DATE = "Ssss... No tasks found on that date!";
+    public static final String MESSAGE_VIEW_TIME_IGNORED = "Note: Time component ignored, only date is used for filtering.";
 
     // Command Error Messages
     public static final String MESSAGE_INVALID_TASK = "Ssss... Invalid task number!";
@@ -34,4 +37,6 @@ public class Messages {
     public static final String MESSAGE_INVALID_EVENT_2 = "Ssss... Missing description or /from or /to details.";
     public static final String MESSAGE_INVALID_COMMAND = "Ssssory, I don't undersssstand the commandsss...";
     public static final String MESSAGE_INVALID_FIND = "Ssss... Please provide a keyword to find tassskss!";
+    public static final String MESSAGE_INVALID_VIEW = "Ssss... Please provide a date in the format: view DATE";
+    public static final String MESSAGE_INVALID_VIEW_DATE = "Ssss... Please provide a valid date for view!";
 }
