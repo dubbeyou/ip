@@ -35,6 +35,10 @@ public class Deadline extends Task {
         this.byTime = byTime;
     }
 
+    public LocalDateTime getByTime() {
+        return byTime;
+    }
+
     @Override
     public String getSaveString() {
         return super.getSaveString() + " | " + by;
