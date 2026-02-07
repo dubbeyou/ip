@@ -44,6 +44,14 @@ public class Event extends Task {
         this.toTime = toTime;
     }
 
+    public LocalDateTime getFromTime() {
+        return fromTime;
+    }
+
+    public LocalDateTime getToTime() {
+        return toTime;
+    }
+
     @Override
     public String getSaveString() {
         return super.getSaveString() + " | " + from + " | " + to;
