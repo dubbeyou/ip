@@ -37,6 +37,17 @@ import snek.data.tasks.Todo;
  * Parser class for parsing user input and file data.
  */
 public class Parser {
+    private static final String TODO_COMMAND = "todo";
+    private static final String DEADLINE_COMMAND = "deadline";
+    private static final String EVENT_COMMAND = "event";
+    private static final String FIND_COMMAND = "find";
+    private static final String BY_MARKER = "/by";
+    private static final String FROM_MARKER = "/from";
+    private static final String TO_MARKER = "/to";
+    private static final String FILE_DELIMITER = "\\|";
+    private static final String DONE_STATUS = "1";
+    private static final String UNDONE_STATUS = "0";
+
     private static final DateTimeFormatter[] DATE_TIME_FORMATS = { DateTimeFormatter.ofPattern("yyyy-M-d H:m"),
             DateTimeFormatter.ofPattern("yyyy-M-d Hmm"), DateTimeFormatter.ofPattern("yyyy/M/d H:m"),
             DateTimeFormatter.ofPattern("yyyy/M/d Hmm"), DateTimeFormatter.ofPattern("d-M-yyyy H:m"),
@@ -79,34 +90,56 @@ public class Parser {
     private static Command handleTodo(String input) throws SnekException {
         assert input != null : "Input string for todo command should not be null.";
 
-        int todoLen = "todo".length();
-        String description = input.substring(todoLen).trim();
-        if (description.isEmpty()) {
-            throw new InvalidArgumentSnekException(MESSAGE_INVALID_TODO);
-        }
+        String description = extractTodoDescription(input);
+        validateNotEmpty(description, MESSAGE_INVALID_TODO);
         return new TodoCommand(description);
+    }
+
+    private static String extractTodoDescription(String input) {
+        int todoLen = TODO_COMMAND.length();
+        return input.substring(todoLen).trim();
+    }
+
+    private static void validateNotEmpty(String value, String errorMessage) throws SnekException {
+        if (value.isEmpty()) {
+            throw new InvalidArgumentSnekException(errorMessage);
+        }
     }
 
     private static Command handleDeadline(String input) throws SnekException {
         assert input != null : "Input string for deadline command should not be null.";
 
-        String byMarker = "/by";
-        int byIdx = input.indexOf(byMarker);
-        int deadlineLen = "deadline".length();
+        int byIdx = findMarkerIndex(input, BY_MARKER);
+        int deadlineLen = DEADLINE_COMMAND.length();
 
+        validateDeadlineFormat(byIdx, deadlineLen);
+
+        String description = input.substring(deadlineLen, byIdx).trim();
+        String by = input.substring(byIdx + BY_MARKER.length()).trim();
+
+        validateDeadlineComponents(description, by);
+
+        return createDeadlineCommand(description, by);
+    }
+
+    private static int findMarkerIndex(String input, String marker) {
+        return input.indexOf(marker);
+    }
+
+    private static void validateDeadlineFormat(int byIdx, int deadlineLen) throws SnekException {
         if (byIdx == -1 || byIdx <= deadlineLen) {
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_DEADLINE_1);
         }
+    }
 
-        String description = input.substring(deadlineLen, byIdx).trim();
-        String by = input.substring(byIdx + byMarker.length()).trim();
-
+    private static void validateDeadlineComponents(String description, String by) throws SnekException {
         if (description.isEmpty() || by.isEmpty()) {
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_DEADLINE_2);
         }
+    }
 
+    private static Command createDeadlineCommand(String description, String by) {
         LocalDateTime byTime = parseDateTime(by);
-
         if (byTime != null) {
             return new DeadlineCommand(description, by, byTime);
         }
@@ -116,25 +149,34 @@ public class Parser {
     private static Command handleEvent(String input) throws SnekException {
         assert input != null : "Input string for event command should not be null.";
 
-        String fromMarker = "/from";
-        String toMarker = "/to";
+        int fromIdx = findMarkerIndex(input, FROM_MARKER);
+        int toIdx = findMarkerIndex(input, TO_MARKER);
+        int commandLen = EVENT_COMMAND.length();
 
-        int fromIdx = input.indexOf(fromMarker);
-        int toIdx = input.indexOf(toMarker);
-        int commandLen = "event".length();
+        validateEventFormat(fromIdx, toIdx);
 
+        String description = input.substring(commandLen, fromIdx).trim();
+        String from = input.substring(fromIdx + FROM_MARKER.length(), toIdx).trim();
+        String to = input.substring(toIdx + TO_MARKER.length()).trim();
+
+        validateEventComponents(description, from, to);
+
+        return createEventCommand(description, from, to);
+    }
+
+    private static void validateEventFormat(int fromIdx, int toIdx) throws SnekException {
         if (fromIdx == -1 || toIdx == -1 || fromIdx > toIdx) {
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_EVENT_1);
         }
+    }
 
-        String description = input.substring(commandLen, fromIdx).trim();
-        String from = input.substring(fromIdx + fromMarker.length(), toIdx).trim();
-        String to = input.substring(toIdx + toMarker.length()).trim();
-
+    private static void validateEventComponents(String description, String from, String to) throws SnekException {
         if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_EVENT_2);
         }
+    }
 
+    private static Command createEventCommand(String description, String from, String to) {
         LocalDateTime fromTime = parseDateTime(from);
         LocalDateTime toTime = parseDateTime(to);
 
@@ -147,12 +189,14 @@ public class Parser {
     private static Command handleFind(String input) throws SnekException {
         assert input != null : "Input string for find command should not be null.";
 
-        int findLen = "find".length();
-        String keyword = input.substring(findLen).trim();
-        if (keyword.isEmpty()) {
-            throw new InvalidArgumentSnekException(MESSAGE_INVALID_FIND);
-        }
+        String keyword = extractFindKeyword(input);
+        validateNotEmpty(keyword, MESSAGE_INVALID_FIND);
         return new FindCommand(keyword);
+    }
+
+    private static String extractFindKeyword(String input) {
+        int findLen = FIND_COMMAND.length();
+        return input.substring(findLen).trim();
     }
 
     /**
@@ -207,74 +251,100 @@ public class Parser {
     public static Task parseTaskFromFile(String line) throws SnekException {
         assert line != null : "Input line for parsing task should not be null.";
 
-        String[] args = line.trim().split("\\|");
-        assert args.length >= 3 : "Input line should have at least 3 fields separated by '|'.";
+        validateLine(line);
+        String[] args = line.trim().split(FILE_DELIMITER);
+        validateMinimumFields(args);
 
-        TaskType type;
+        TaskType type = parseTaskType(args[0].trim());
+        boolean isDone = parseDoneStatus(args[1].trim());
+        validateFieldsForType(type, args);
 
+        return createTaskFromArgs(type, args, isDone);
+    }
+
+    private static void validateLine(String line) throws SnekException {
         if (line == null || line.trim().isEmpty()) {
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_FILE_FORMAT);
         }
+    }
 
+    private static void validateMinimumFields(String[] args) throws SnekException {
         if (args.length < 3) {
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_FILE_FORMAT);
         }
+    }
 
+    private static TaskType parseTaskType(String typeCode) throws SnekException {
         try {
-            type = TaskType.fromCode(args[0].trim());
+            return TaskType.fromCode(typeCode);
         } catch (InvalidCommandSnekException e) {
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_FILE_FORMAT);
         }
+    }
 
-        String doneField = args[1].trim();
-
-        if (!doneField.equals("0") && !doneField.equals("1")) {
+    private static boolean parseDoneStatus(String doneField) throws SnekException {
+        if (!doneField.equals(UNDONE_STATUS) && !doneField.equals(DONE_STATUS)) {
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_FILE_FORMAT);
         }
+        return doneField.equals(DONE_STATUS);
+    }
 
+    private static void validateFieldsForType(TaskType type, String[] args) throws SnekException {
         if (type == TaskType.DEADLINE && args.length < 4) {
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_FILE_FORMAT);
         }
-
         if (type == TaskType.EVENT && args.length < 5) {
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_FILE_FORMAT);
         }
+    }
 
-        boolean isDone = doneField.equals("1");
+    private static Task createTaskFromArgs(TaskType type, String[] args, boolean isDone) throws SnekException {
         switch (type) {
         case TODO:
-            Todo todo = new Todo(args[2].trim());
-            if (isDone) {
-                todo.markAsDone();
-            }
-            return todo;
+            return createTodoFromFile(args[2].trim(), isDone);
         case DEADLINE:
-            LocalDateTime byDateTime = parseDateTime(args[3].trim());
-            Deadline deadline;
-            if (byDateTime == null) {
-                deadline = new Deadline(args[2].trim(), args[3].trim());
-            } else {
-                deadline = new Deadline(args[2].trim(), args[3].trim(), byDateTime);
-            }
-            if (isDone) {
-                deadline.markAsDone();
-            }
-            return deadline;
+            return createDeadlineFromFile(args[2].trim(), args[3].trim(), isDone);
         case EVENT:
-            LocalDateTime fromDateTime = parseDateTime(args[3].trim());
-            LocalDateTime toDateTime = parseDateTime(args[4].trim());
-            Event event;
-            if (fromDateTime == null || toDateTime == null) {
-                event = new Event(args[2].trim(), args[3].trim(), args[4].trim());
-            } else {
-                event = new Event(args[2].trim(), args[3].trim(), args[4].trim(), fromDateTime, toDateTime);
-            }
-            if (isDone) {
-                event.markAsDone();
-            }
-            return event;
+            return createEventFromFile(args[2].trim(), args[3].trim(), args[4].trim(), isDone);
         default:
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_FILE_FORMAT);
         }
+    }
+
+    private static Task createTodoFromFile(String description, boolean isDone) {
+        Todo todo = new Todo(description);
+        if (isDone) {
+            todo.markAsDone();
+        }
+        return todo;
+    }
+
+    private static Task createDeadlineFromFile(String description, String by, boolean isDone) {
+        LocalDateTime byDateTime = parseDateTime(by);
+        Deadline deadline;
+        if (byDateTime == null) {
+            deadline = new Deadline(description, by);
+        } else {
+            deadline = new Deadline(description, by, byDateTime);
+        }
+        if (isDone) {
+            deadline.markAsDone();
+        }
+        return deadline;
+    }
+
+    private static Task createEventFromFile(String description, String from, String to, boolean isDone) {
+        LocalDateTime fromDateTime = parseDateTime(from);
+        LocalDateTime toDateTime = parseDateTime(to);
+        Event event;
+        if (fromDateTime == null || toDateTime == null) {
+            event = new Event(description, from, to);
+        } else {
+            event = new Event(description, from, to, fromDateTime, toDateTime);
+        }
+        if (isDone) {
+            event.markAsDone();
+        }
+        return event;
     }
 }
