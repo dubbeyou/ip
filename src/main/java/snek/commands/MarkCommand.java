@@ -26,6 +26,9 @@ public class MarkCommand extends Command {
 
     @Override
     public String execute(TaskList tasks, Storage storage) throws SnekException {
+        assert tasks != null : "Task list should not be null.";
+        assert storage != null : "Storage should not be null.";
+
         int index;
         try {
             index = Integer.valueOf(taskNumber);
