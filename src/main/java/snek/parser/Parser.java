@@ -66,6 +66,8 @@ public class Parser {
      * @return A LocalDateTime object if parsing is successful; null otherwise.
      */
     public static LocalDateTime parseDateTime(String input) {
+        assert input != null : "Input date-time string should not be null.";
+
         for (DateTimeFormatter formatter : DATE_TIME_FORMATS) {
             try {
                 return LocalDateTime.parse(input, formatter);
@@ -86,6 +88,8 @@ public class Parser {
     }
 
     private static Command handleTodo(String input) throws SnekException {
+        assert input != null : "Input string for todo command should not be null.";
+
         String description = extractTodoDescription(input);
         validateNotEmpty(description, MESSAGE_INVALID_TODO);
         return new TodoCommand(description);
@@ -103,6 +107,8 @@ public class Parser {
     }
 
     private static Command handleDeadline(String input) throws SnekException {
+        assert input != null : "Input string for deadline command should not be null.";
+
         int byIdx = findMarkerIndex(input, BY_MARKER);
         int deadlineLen = DEADLINE_COMMAND.length();
 
@@ -141,6 +147,8 @@ public class Parser {
     }
 
     private static Command handleEvent(String input) throws SnekException {
+        assert input != null : "Input string for event command should not be null.";
+
         int fromIdx = findMarkerIndex(input, FROM_MARKER);
         int toIdx = findMarkerIndex(input, TO_MARKER);
         int commandLen = EVENT_COMMAND.length();
@@ -179,6 +187,8 @@ public class Parser {
     }
 
     private static Command handleFind(String input) throws SnekException {
+        assert input != null : "Input string for find command should not be null.";
+
         String keyword = extractFindKeyword(input);
         validateNotEmpty(keyword, MESSAGE_INVALID_FIND);
         return new FindCommand(keyword);
@@ -197,15 +207,21 @@ public class Parser {
      * @throws SnekException If the command is invalid or has invalid arguments.
      */
     public static Command parse(String input) throws SnekException {
+        assert input != null : "Input string for parsing command should not be null.";
         input = input.trim();
         String[] args = input.split("[\\s]");
+
+        assert args.length > 0 : "Input string should contain at least one word.";
+
         CommandType cmd = CommandType.from(args[0]);
         switch (cmd) {
         case LIST:
             return new ListCommand();
         case MARK:
+            assert args.length > 1 : "Mark command should have a task number argument.";
             return new MarkCommand(args[1]);
         case UNMARK:
+            assert args.length > 1 : "Unmark command should have a task number argument.";
             return new UnmarkCommand(args[1]);
         case TODO:
             return handleTodo(input);
@@ -214,6 +230,7 @@ public class Parser {
         case EVENT:
             return handleEvent(input);
         case DELETE:
+            assert args.length > 1 : "Delete command should have a task number argument.";
             return new DeleteCommand(args[1]);
         case FIND:
             return handleFind(input);
@@ -232,6 +249,8 @@ public class Parser {
      * @throws SnekException If the line has an invalid format.
      */
     public static Task parseTaskFromFile(String line) throws SnekException {
+        assert line != null : "Input line for parsing task should not be null.";
+
         validateLine(line);
         String[] args = line.trim().split(FILE_DELIMITER);
         validateMinimumFields(args);

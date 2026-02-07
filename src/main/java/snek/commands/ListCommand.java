@@ -9,6 +9,9 @@ import snek.storage.Storage;
 public class ListCommand extends Command {
     @Override
     public String execute(TaskList tasks, Storage storage) {
+        assert tasks != null : "Task list should not be null.";
+        assert storage != null : "Storage should not be null.";
+
         return tasks.getString();
     }
 }

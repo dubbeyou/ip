@@ -27,6 +27,9 @@ public class FindCommand extends Command {
 
     @Override
     public String execute(TaskList tasks, Storage storage) throws SnekException {
+        assert tasks != null : "Task list should not be null.";
+        assert storage != null : "Storage should not be null.";
+
         ArrayList<Task> matchedTasks = new ArrayList<>();
         for (Task task : tasks.getTasks()) {
             if (task.getDescription().contains(keyword)) {

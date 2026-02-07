@@ -54,6 +54,9 @@ public class EventCommand extends Command {
 
     @Override
     public String execute(TaskList tasks, Storage storage) throws SnekException {
+        assert tasks != null : "Task list should not be null.";
+        assert storage != null : "Storage should not be null.";
+
         if (fromTime != null && toTime != null) {
             Event event = new Event(description, from, to, fromTime, toTime);
             tasks.add(event);
