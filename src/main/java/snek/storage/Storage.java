@@ -43,6 +43,8 @@ public class Storage {
         } catch (IOException e) {
             throw new StorageSnekException(MESSAGE_ERROR_LOAD);
         }
+
+        assert file.exists() : "Storage file should exist after creation.";
     }
 
     /**
@@ -53,6 +55,8 @@ public class Storage {
      * tasks.
      */
     public ArrayList<Task> loadTasks() throws SnekException {
+        assert file.exists() : "Storage file should exist before loading tasks.";
+
         ArrayList<Task> taskList = new ArrayList<>();
         try (Scanner scanner = new Scanner(file)) {
             while (scanner.hasNextLine()) {
@@ -73,6 +77,9 @@ public class Storage {
      * @throws StorageSnekException If there is an error writing to the file.
      */
     public void write(Task task) throws StorageSnekException {
+        assert file.exists() : "Storage file should exist before writing tasks.";
+        assert task != null : "Task to write should not be null.";
+
         try (FileWriter fw = new FileWriter(file, true)) {
             fw.write(task.getSaveString() + "\n");
             fw.close();
@@ -88,6 +95,9 @@ public class Storage {
      * @throws StorageSnekException If there is an error writing to the file.
      */
     public void overwrite(ArrayList<Task> taskList) throws StorageSnekException {
+        assert file.exists() : "Storage file should exist before overwriting tasks.";
+        assert taskList != null : "Task list to overwrite should not be null.";
+
         try (FileWriter fw = new FileWriter(file, false)) {
             for (Task task : taskList) {
                 fw.write(task.getSaveString() + "\n");
