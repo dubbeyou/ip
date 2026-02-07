@@ -7,6 +7,8 @@ import static snek.common.Messages.MESSAGE_INVALID_EVENT_2;
 import static snek.common.Messages.MESSAGE_INVALID_FILE_FORMAT;
 import static snek.common.Messages.MESSAGE_INVALID_FIND;
 import static snek.common.Messages.MESSAGE_INVALID_TODO;
+import static snek.common.Messages.MESSAGE_INVALID_VIEW;
+import static snek.common.Messages.MESSAGE_INVALID_VIEW_DATE;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,6 +26,7 @@ import snek.commands.ListCommand;
 import snek.commands.MarkCommand;
 import snek.commands.TodoCommand;
 import snek.commands.UnmarkCommand;
+import snek.commands.ViewCommand;
 import snek.data.exception.InvalidArgumentSnekException;
 import snek.data.exception.InvalidCommandSnekException;
 import snek.data.exception.SnekException;
@@ -41,6 +44,7 @@ public class Parser {
     private static final String DEADLINE_COMMAND = "deadline";
     private static final String EVENT_COMMAND = "event";
     private static final String FIND_COMMAND = "find";
+    private static final String VIEW_COMMAND = "view";
     private static final String BY_MARKER = "/by";
     private static final String FROM_MARKER = "/from";
     private static final String TO_MARKER = "/to";
@@ -194,9 +198,27 @@ public class Parser {
         return new FindCommand(keyword);
     }
 
+    private static Command handleView(String input) throws SnekException {
+        assert input != null : "Input string for view command should not be null.";
+
+        String dateString = extractViewDate(input);
+        validateNotEmpty(dateString, MESSAGE_INVALID_VIEW);
+
+        LocalDateTime viewDateTime = parseDateTime(dateString);
+        if (viewDateTime == null) {
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_VIEW_DATE);
+        }
+        return new ViewCommand(viewDateTime);
+    }
+
     private static String extractFindKeyword(String input) {
         int findLen = FIND_COMMAND.length();
         return input.substring(findLen).trim();
+    }
+
+    private static String extractViewDate(String input) {
+        int viewLen = VIEW_COMMAND.length();
+        return input.substring(viewLen).trim();
     }
 
     /**
@@ -234,6 +256,8 @@ public class Parser {
             return new DeleteCommand(args[1]);
         case FIND:
             return handleFind(input);
+        case VIEW:
+            return handleView(input);
         case BYE:
             return new ByeCommand();
         default:
