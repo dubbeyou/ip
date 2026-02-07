@@ -2,6 +2,7 @@ package snek.commands;
 
 import static snek.common.Messages.MESSAGE_NO_TASKS_ON_DATE;
 import static snek.common.Messages.MESSAGE_VIEW_TASKS;
+import static snek.common.Messages.MESSAGE_VIEW_TIME_IGNORED;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -59,7 +60,17 @@ public class ViewCommand extends Command {
         }
 
         TaskList matchedTasksList = new TaskList(matchedTasks);
-        return String.format(MESSAGE_VIEW_TASKS, targetDate, matchedTasksList.getString());
+        String result = String.format(MESSAGE_VIEW_TASKS, targetDate, matchedTasksList.getString());
+
+        if (hasTimeComponent(viewDateTime)) {
+            result = MESSAGE_VIEW_TIME_IGNORED + "\n" + result;
+        }
+
+        return result;
+    }
+
+    private boolean hasTimeComponent(LocalDateTime dateTime) {
+        return dateTime.getHour() != 0 || dateTime.getMinute() != 0 || dateTime.getSecond() != 0;
     }
 
     private boolean isDateInRange(LocalDate targetDate, LocalDateTime fromTime, LocalDateTime toTime) {

@@ -24,6 +24,7 @@ public class Messages {
     public static final String MESSAGE_NO_MATCHING_TASKS = "Ssss... No matching tasksss found!";
     public static final String MESSAGE_VIEW_TASKS = "Here are the tasks on %s:\n%s";
     public static final String MESSAGE_NO_TASKS_ON_DATE = "Ssss... No tasks found on that date!";
+    public static final String MESSAGE_VIEW_TIME_IGNORED = "Note: Time component ignored, only date is used for filtering.";
 
     // Command Error Messages
     public static final String MESSAGE_INVALID_TASK = "Ssss... Invalid task number!";
