@@ -13,6 +13,8 @@ public class Messages {
     public static final String MESSAGE_SUCCESS_LOAD = "Ssss... Loaded tasksss from storage..sss .. or maybe I created a new file for yousss...!";
     public static final String MESSAGE_ERROR_LOAD = "Ssss... Error creating storage file!";
     public static final String MESSAGE_ERROR_WRITE = "Ssss... Error writing to storage file!";
+    public static final String MESSAGE_ERROR_READ_PERMISSION = "Ssss... Cannot read storage file - access denied! Check file permissions.";
+    public static final String MESSAGE_ERROR_WRITE_PERMISSION = "Ssss... Cannot write to storage file - access denied! Check file permissions.";
     public static final String MESSAGE_INVALID_FILE_FORMAT = "Ssss... Invalid file format in storage!";
 
     // Command Messages

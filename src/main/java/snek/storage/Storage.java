@@ -1,7 +1,9 @@
 package snek.storage;
 
 import static snek.common.Messages.MESSAGE_ERROR_LOAD;
+import static snek.common.Messages.MESSAGE_ERROR_READ_PERMISSION;
 import static snek.common.Messages.MESSAGE_ERROR_WRITE;
+import static snek.common.Messages.MESSAGE_ERROR_WRITE_PERMISSION;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -65,6 +67,10 @@ public class Storage {
     public ArrayList<Task> loadTasks() throws SnekException {
         assert file.exists() : "Storage file should exist before loading tasks.";
 
+        if (!file.canRead()) {
+            throw new StorageSnekException(MESSAGE_ERROR_READ_PERMISSION);
+        }
+
         ArrayList<Task> taskList = new ArrayList<>();
         try (Scanner scanner = new Scanner(file)) {
             readAllTasks(scanner, taskList);
@@ -92,6 +98,10 @@ public class Storage {
         assert file.exists() : "Storage file should exist before writing tasks.";
         assert task != null : "Task to write should not be null.";
 
+        if (!file.canWrite()) {
+            throw new StorageSnekException(MESSAGE_ERROR_WRITE_PERMISSION);
+        }
+
         try (FileWriter fw = new FileWriter(file, true)) {
             fw.write(task.getSaveString() + "\n");
         } catch (IOException e) {
@@ -108,6 +118,10 @@ public class Storage {
     public void overwrite(ArrayList<Task> taskList) throws StorageSnekException {
         assert file.exists() : "Storage file should exist before overwriting tasks.";
         assert taskList != null : "Task list to overwrite should not be null.";
+
+        if (!file.canWrite()) {
+            throw new StorageSnekException(MESSAGE_ERROR_WRITE_PERMISSION);
+        }
 
         try (FileWriter fw = new FileWriter(file, false)) {
             writeAllTasks(fw, taskList);
