@@ -1,6 +1,7 @@
 package snek.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static snek.common.Messages.MESSAGE_ERROR_WRITE_PERMISSION;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -73,5 +74,59 @@ public class StorageTest {
         assertEquals(2, loadedTasks.size());
         assertEquals(todo2.getSaveString(), loadedTasks.get(0).getSaveString());
         assertEquals(todo3.getSaveString(), loadedTasks.get(1).getSaveString());
+    }
+
+    @Test
+    public void loadTasks_readOnlyFile_success() throws SnekException {
+        Task todo = new Todo("test task");
+        storage.write(todo);
+
+        File file = new File(TEST_FILEPATH);
+        file.setReadOnly();
+
+        try {
+            // Try to read - should pass since read-only doesn't prevent reading
+            ArrayList<Task> loadedTasks = storage.loadTasks();
+            assertEquals(1, loadedTasks.size());
+        } finally {
+            file.setWritable(true);
+        }
+    }
+
+    @Test
+    public void write_readOnlyFile_throwsException() {
+        File file = new File(TEST_FILEPATH);
+        file.setReadOnly();
+
+        try {
+            Task todo = new Todo("test task");
+            storage.write(todo);
+        } catch (StorageSnekException e) {
+            assertEquals(MESSAGE_ERROR_WRITE_PERMISSION, e.getMessage());
+        } finally {
+            file.setWritable(true);
+        }
+    }
+
+    @Test
+    public void overwrite_readOnlyFile_throwsException() {
+        File file = new File(TEST_FILEPATH);
+        file.setReadOnly();
+
+        try {
+            ArrayList<Task> taskList = new ArrayList<>();
+            taskList.add(new Todo("test task"));
+            storage.overwrite(taskList);
+        } catch (StorageSnekException e) {
+            assertEquals(MESSAGE_ERROR_WRITE_PERMISSION, e.getMessage());
+        } finally {
+            file.setWritable(true);
+        }
+    }
+
+    @Test
+    public void loadTasks_emptyFile_success() throws SnekException {
+        ArrayList<Task> loadedTasks = storage.loadTasks();
+        assertEquals(0, loadedTasks.size());
     }
 }
