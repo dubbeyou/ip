@@ -6,6 +6,7 @@ import static snek.common.Messages.MESSAGE_INVALID_EVENT_1;
 import static snek.common.Messages.MESSAGE_INVALID_EVENT_2;
 import static snek.common.Messages.MESSAGE_INVALID_FILE_FORMAT;
 import static snek.common.Messages.MESSAGE_INVALID_FIND;
+import static snek.common.Messages.MESSAGE_INVALID_MARKER_DUPLICATE;
 import static snek.common.Messages.MESSAGE_INVALID_TODO;
 import static snek.common.Messages.MESSAGE_INVALID_VIEW;
 import static snek.common.Messages.MESSAGE_INVALID_VIEW_DATE;
@@ -110,9 +111,16 @@ public class Parser {
         }
     }
 
+    private static void validateMarkerUniqueness(String input, String marker) throws SnekException {
+        if (input.indexOf(marker) != input.lastIndexOf(marker)) {
+            throw new InvalidArgumentSnekException(String.format(MESSAGE_INVALID_MARKER_DUPLICATE, marker));
+        }
+    }
+
     private static Command handleDeadline(String input) throws SnekException {
         assert input != null : "Input string for deadline command should not be null.";
 
+        validateMarkerUniqueness(input, BY_MARKER);
         int byIdx = findMarkerIndex(input, BY_MARKER);
         int deadlineLen = DEADLINE_COMMAND.length();
 
@@ -153,6 +161,8 @@ public class Parser {
     private static Command handleEvent(String input) throws SnekException {
         assert input != null : "Input string for event command should not be null.";
 
+        validateMarkerUniqueness(input, FROM_MARKER);
+        validateMarkerUniqueness(input, TO_MARKER);
         int fromIdx = findMarkerIndex(input, FROM_MARKER);
         int toIdx = findMarkerIndex(input, TO_MARKER);
         int commandLen = EVENT_COMMAND.length();
@@ -231,7 +241,7 @@ public class Parser {
     public static Command parse(String input) throws SnekException {
         assert input != null : "Input string for parsing command should not be null.";
         input = input.trim();
-        String[] args = input.split("[\\s]");
+        String[] args = input.split("[\\s]+");
 
         assert args.length > 0 : "Input string should contain at least one word.";
 

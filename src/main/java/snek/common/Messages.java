@@ -39,4 +39,5 @@ public class Messages {
     public static final String MESSAGE_INVALID_FIND = "Ssss... Please provide a keyword to find tassskss!";
     public static final String MESSAGE_INVALID_VIEW = "Ssss... Please provide a date in the format: view DATE";
     public static final String MESSAGE_INVALID_VIEW_DATE = "Ssss... Please provide a valid date for view!";
+    public static final String MESSAGE_INVALID_MARKER_DUPLICATE = "Ssss... Marker %s cannot appear multiple timesss!";
 }
