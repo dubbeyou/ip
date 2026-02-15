@@ -40,4 +40,6 @@ public class Messages {
     public static final String MESSAGE_INVALID_VIEW = "Ssss... Please provide a date in the format: view DATE";
     public static final String MESSAGE_INVALID_VIEW_DATE = "Ssss... Please provide a valid date for view!";
     public static final String MESSAGE_INVALID_MARKER_DUPLICATE = "Ssss... Marker %s cannot appear multiple timesss!";
+    public static final String MESSAGE_INVALID_EVENT_TIME = "Ssss... Event start time cannot be same as or after end time!";
+    public static final String MESSAGE_DUPLICATE_TASK = "Ssss... This task already exists in your list!";
 }

@@ -1,5 +1,6 @@
 package snek.data.tasks;
 
+import static snek.common.Messages.MESSAGE_DUPLICATE_TASK;
 import static snek.common.Messages.MESSAGE_INVALID_TASK;
 
 import java.util.ArrayList;
@@ -53,10 +54,15 @@ public class TaskList {
      *
      * @param task The task to add.
      * @return The updated list of tasks.
+     * @throws InvalidArgumentSnekException If the task already exists in the
+     * list.
      */
-    public ArrayList<Task> add(Task task) {
+    public ArrayList<Task> add(Task task) throws InvalidArgumentSnekException {
         assert task != null : "Task to add should not be null.";
 
+        if (tasks.contains(task)) {
+            throw new InvalidArgumentSnekException(MESSAGE_DUPLICATE_TASK);
+        }
         tasks.add(task);
         return tasks;
     }
