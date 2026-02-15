@@ -22,4 +22,5 @@ Week 5:
 - Accepted Copilot inline suggestions for code
 
 Week 6:
+- Asked Copilot to suggest places for possible improvement of error handling
 - Accepted Copilot inline suggestions for code
