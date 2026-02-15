@@ -44,4 +44,5 @@ public class Messages {
     public static final String MESSAGE_INVALID_MARKER_DUPLICATE = "Ssss... Marker %s cannot appear multiple timesss!";
     public static final String MESSAGE_INVALID_EVENT_TIME = "Ssss... Event start time cannot be same as or after end time!";
     public static final String MESSAGE_DUPLICATE_TASK = "Ssss... This task already exists in your list!";
+    public static final String MESSAGE_EMPTY_LIST = "Ssss... You have no tasks in your list!";
 }
