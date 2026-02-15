@@ -23,4 +23,6 @@ Week 5:
 
 Week 6:
 - Asked Copilot to suggest places for possible improvement of error handling
+- Used Copilot to generate JUnit test cases
 - Accepted Copilot inline suggestions for code
+- Used Copilot to help edit README.md
