@@ -32,7 +32,7 @@ public class FindCommand extends Command {
 
         ArrayList<Task> matchedTasks = new ArrayList<>();
         for (Task task : tasks.getTasks()) {
-            if (task.getDescription().contains(keyword)) {
+            if (((task.getDescription()).toLowerCase()).contains(keyword.toLowerCase())) {
                 matchedTasks.add(task);
             }
         }
