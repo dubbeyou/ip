@@ -1,9 +1,11 @@
 package snek.commands;
 
 import static snek.common.Messages.MESSAGE_ADD_TASK;
+import static snek.common.Messages.MESSAGE_INVALID_EVENT_TIME;
 
 import java.time.LocalDateTime;
 
+import snek.data.exception.InvalidArgumentSnekException;
 import snek.data.exception.SnekException;
 import snek.data.tasks.Event;
 import snek.data.tasks.TaskList;
@@ -58,6 +60,9 @@ public class EventCommand extends Command {
         assert storage != null : "Storage should not be null.";
 
         if (fromTime != null && toTime != null) {
+            if (fromTime.isAfter(toTime) || fromTime.isEqual(toTime)) {
+                throw new InvalidArgumentSnekException(MESSAGE_INVALID_EVENT_TIME);
+            }
             Event event = new Event(description, from, to, fromTime, toTime);
             tasks.add(event);
             storage.write(event);

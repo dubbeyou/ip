@@ -35,6 +35,9 @@ public class UnmarkCommand extends Command {
         } catch (NumberFormatException e) {
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_TASK);
         }
+        if (index <= 0) {
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_TASK);
+        }
         if (!tasks.getIndex(index).isDone()) {
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_UNMARK);
         }

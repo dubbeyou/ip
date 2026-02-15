@@ -35,6 +35,9 @@ public class DeleteCommand extends Command {
         } catch (NumberFormatException e) {
             throw new InvalidArgumentSnekException(MESSAGE_INVALID_TASK);
         }
+        if (index <= 0) {
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_TASK);
+        }
         Task removedTask = tasks.delete(index);
         storage.overwrite(tasks.getTasks());
         return String.format(MESSAGE_DELETE_TASK, removedTask, tasks.size());
