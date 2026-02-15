@@ -7,6 +7,7 @@ import static snek.common.Messages.MESSAGE_INVALID_DEADLINE_2;
 import static snek.common.Messages.MESSAGE_INVALID_EVENT_1;
 import static snek.common.Messages.MESSAGE_INVALID_EVENT_2;
 import static snek.common.Messages.MESSAGE_INVALID_FILE_FORMAT;
+import static snek.common.Messages.MESSAGE_INVALID_MARKER_DUPLICATE;
 import static snek.common.Messages.MESSAGE_INVALID_TODO;
 import static snek.common.Messages.MESSAGE_INVALID_VIEW;
 import static snek.common.Messages.MESSAGE_INVALID_VIEW_DATE;
@@ -368,6 +369,46 @@ public class ParserTest {
             Parser.parseTaskFromFile(input);
         } catch (SnekException e) {
             assertEquals(MESSAGE_INVALID_FILE_FORMAT, e.getMessage());
+        }
+    }
+
+    @Test
+    public void parse_deadlineWithDuplicateByMarker_throwsException() {
+        String input = "deadline task /by 2026-01-01 /by 2026-01-02";
+        try {
+            Parser.parse(input);
+        } catch (SnekException e) {
+            assertEquals(String.format(MESSAGE_INVALID_MARKER_DUPLICATE, "/by"), e.getMessage());
+        }
+    }
+
+    @Test
+    public void parse_eventWithDuplicateFromMarker_throwsException() {
+        String input = "event task /from 2026-01-01 /from 2026-01-02 /to 2026-01-03";
+        try {
+            Parser.parse(input);
+        } catch (SnekException e) {
+            assertEquals(String.format(MESSAGE_INVALID_MARKER_DUPLICATE, "/from"), e.getMessage());
+        }
+    }
+
+    @Test
+    public void parse_eventWithDuplicateToMarker_throwsException() {
+        String input = "event task /from 2026-01-01 /to 2026-01-02 /to 2026-01-03";
+        try {
+            Parser.parse(input);
+        } catch (SnekException e) {
+            assertEquals(String.format(MESSAGE_INVALID_MARKER_DUPLICATE, "/to"), e.getMessage());
+        }
+    }
+
+    @Test
+    public void parse_zeroTaskNumber_throwsException() {
+        String input = "mark 0";
+        try {
+            Parser.parse(input);
+        } catch (SnekException e) {
+            // Task index is checked in the command's execute method
         }
     }
 }
