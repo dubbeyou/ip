@@ -7,6 +7,7 @@ import static snek.common.Messages.MESSAGE_INVALID_EVENT_2;
 import static snek.common.Messages.MESSAGE_INVALID_FILE_FORMAT;
 import static snek.common.Messages.MESSAGE_INVALID_FIND;
 import static snek.common.Messages.MESSAGE_INVALID_MARKER_DUPLICATE;
+import static snek.common.Messages.MESSAGE_INVALID_TASK;
 import static snek.common.Messages.MESSAGE_INVALID_TODO;
 import static snek.common.Messages.MESSAGE_INVALID_VIEW;
 import static snek.common.Messages.MESSAGE_INVALID_VIEW_DATE;
@@ -231,6 +232,12 @@ public class Parser {
         return input.substring(viewLen).trim();
     }
 
+    private static void validateArgumentCount(String[] args, int expectedCount) throws SnekException {
+        if (args.length < expectedCount) {
+            throw new InvalidArgumentSnekException(MESSAGE_INVALID_TASK);
+        }
+    }
+
     /**
      * Parses a user input string into a Command object.
      *
@@ -250,10 +257,10 @@ public class Parser {
         case LIST:
             return new ListCommand();
         case MARK:
-            assert args.length > 1 : "Mark command should have a task number argument.";
+            validateArgumentCount(args, 2);
             return new MarkCommand(args[1]);
         case UNMARK:
-            assert args.length > 1 : "Unmark command should have a task number argument.";
+            validateArgumentCount(args, 2);
             return new UnmarkCommand(args[1]);
         case TODO:
             return handleTodo(input);
@@ -262,7 +269,7 @@ public class Parser {
         case EVENT:
             return handleEvent(input);
         case DELETE:
-            assert args.length > 1 : "Delete command should have a task number argument.";
+            validateArgumentCount(args, 2);
             return new DeleteCommand(args[1]);
         case FIND:
             return handleFind(input);
